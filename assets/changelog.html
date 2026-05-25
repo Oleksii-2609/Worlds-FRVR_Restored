@@ -1,0 +1,2228 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Updates | Worlds FRVR</title>
+    <meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style type="text/css">
+body {
+  color: #EED;
+  background-color: #111;
+  font-size: 24px;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+.unknown {
+  color: red;
+}
+.code {
+  font-family: monospace;
+  background-color: #333;
+  border-radius: 4px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+.li1 {
+  padding-left: 3em;
+  display: list-item;
+  list-style-type: disc;
+  list-style-position: inside;
+  line-break: normal;
+}
+.li2 {
+  padding-left: 5em;
+  display: list-item;
+  list-style-type: circle;
+  list-style-position: inside;
+  line-break: normal;
+}
+a {
+  color: #DDF;
+}
+a:visited {
+  color: #DBF;
+}
+</style>
+  </head>
+  <body>
+    <h1 id="standalone">Build together in <a href="/">Worlds FRVR</a>!</h1><br/>
+    <div id="content">Change Log and Patch Notes<br/>Loading...</div>
+    <script>
+      /* eslint-disable */
+      window.onload = function () {
+        if (window.parent.changelogHide) {
+          document.getElementById('standalone').style.display = 'none';
+        }
+        function mdToHtml(str) {
+          str = str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          if (!str) {
+            return '<br/>';
+          }
+          if (str.startsWith('# ')) {
+            return '<h1>' + str.slice(2) + '</h1>';
+          }
+          if (str.startsWith('## ')) {
+            return '<h2>' + str.slice(3) + '</h2>';
+          }
+          if (str.startsWith('### ')) {
+            return '<h3>' + str.slice(4) + '</h3>';
+          }
+          if (str.startsWith('• ')) {
+            return '<div class="li1">' + str.slice(2) + '</div>';
+          }
+          if (str.startsWith('  ◦ ')) {
+            return '<div class="li2">' + str.slice(4) + '</div>';
+          }
+          return '<div class="unknown">' + str + '</div>';
+        }
+        function styleLine(str) {
+          str = str.replace(/`([^`]+)`/g, function (a, b) {
+            return '<span class="code">' + b + '</span>';
+          });
+          str = str.replace(/\*\*(\S[^*]*\S)\*\*/g, function (a, b) {
+            return '<b>' + b + '</b>';
+          });
+          str = str.replace(/\*(\S[^*]*\S)\*/g, function (a, b) {
+            return '<i>' + b + '</i>';
+          });
+          return str;
+        }
+        function comments(str) {
+          return !str.startsWith('//');
+        }
+        var src = document.getElementById('data').innerHTML.trim().split('\n').filter(comments);
+        document.getElementById('content').innerHTML = src.map(mdToHtml).map(styleLine).join('');
+      };
+    </script>
+    <script id="data" type="app-md">
+// Add new entries at the top
+
+# 2023-03-15 - ***More Gems, Builder Queue, New FRVR Account Backend*** - 0.72.1
+• Add ability for Facebook users to buy gems with cash
+• Add 3 free gems that can be claimed daily
+• Change Captain and Skeleton Minion's gem prices to bring them in-line with the other outfits of the same rarity
+• Change world limits so that if a world is "full" players can still join, but are demoted to visitors/spectators, and queue for the chance to be a builder/area builder/visitor.  An interface for managing this new "build queue" will be added later.
+• Add `/build_queue_threshold` for configuring how many people in the queue are allowed to be builders at any time (max of 35 in Unlimited (temporarily), 4 in Lost Frontier)
+// • Add `/build_queue_leave` to manually leave the build queue
+// • Add `/build_queue_join` to manually join the build queue if left, removed or in a non-automatically queuing world
+// • Add `/build_queue_position` to show your position in the build queue
+• Add `/build_queue_promote` to promote someone to the front of the build queue (if possible, they'll get build access, someone else will lose it)
+• Add `/build_queue_demote` to demote someone to the back of the build queue (allowing someone else build access, if any are waiting)
+// • Add `/build_queue_kick` to kick someone from the build queue (they'll need to re-join manually)
+// • Add `/build_queue_afk` to automatically kick AFK users from the build queue (they'll need to re-join manually) (default: no timeout)
+// • Add `/build_queue_automatic` to set if a world automatically queues all builders or if they need to manually joined (not recommended until we add an interface for users to easily join the queue) (default: automatic)
+• Add `/build_queue_chat` to set if users waiting in the queue are allowed to chat or not (default: allowed)
+• Add `/build_queue_visit` to set waiting users to be visitors instead of spectators (default: visitors)
+• Add `/build_queue_auto_promote` to automatically promote admins/owners upon entering the world (default: on)
+• Allow setting Lost Frontier worlds to `Anyone can [Area] Build` (by default, any players after the first 4 to join will simply be visitors)
+• Remove limit of 4 Builder roles assigned in Lost Frontier worlds (by default, any players after the first 4 to join will simply be visitors)
+• Add integration to new FRVR Account backend and use it for new users
+• Add configurable activation delay time to Waygates
+• Add timestamp to downloaded Photo filenames
+• All plants now absorb water from Watered Tilled Dirt when growing to next stage
+• All plants now start watered when placed on top of Watered Tilled Dirt
+• Fix bug with plant growth calculation when returning to a previously visited area after some time
+• Fix crash running some world-related commands after leaving a world and returning to the world list
+• Fix crash if you disconnect and reconnect to a world while digging
+• Fix bug when starting Group Races with an invalid course ID
+• Fix bug where Playing as Visitor would not be reset after finishing a race that has been restarted
+• Fix visual bug when settings sliders are below minimum value (bug credit: !air boi)
+
+# 2023-03-13 - ***Access Token Improvements and Bug Fixes*** - 0.71.9
+• Change `/world_token`s to only be valid if the issuer is still an admin
+• Add `/world_token_revoke_all` to revoke all outstanding world tokens
+• Fix world admins being able to grant others admin access via `/world_token` (bug credit: Mr. Aaron the cat)
+• Fix crash running `/world_created` and related commands while connecting to a world (bug credit: Satera)
+
+# 2023-03-09 - ***Bug Fixes*** - 0.71.7
+• Fix repeated errors around yellow berry bushes (bug credit: Reece)
+• Hide invalid/unreleased materials from /give command help
+• Fix create first world prompt display error on some mobile devices
+• Fix rare crash deep underground in some worlds
+
+# 2023-03-07 - ***Bug Fixes and Mobile Voxel Packs*** - 0.71.6
+• Add `/voxel_pack` for applying voxel packs on mobile
+• Allow overriding sounds the same way as voxel packs (drag and drop or `/voxel_pack`)
+• Fix water turning opaque after applying a voxel pack (bug credit: NotRoss)
+• Fix ignoring all but the first file when drag-and-dropping textures/voxel packs onto the browser window (bug credit: NotRoss)
+• Fix invalid "ores" made of alloys being available through /give
+
+# 2023-03-06 - ***Performance Fixes*** - 0.71.5
+• Fix performance regression in 0.71.0
+• Improve performance loading chunks / building
+• Fix Watering System not watering crops properly. (bug credit: Jxst_GxmingZ(Xian) & Axios)
+
+# 2023-03-03 - ***Bug Fix*** - 0.71.4
+• Fix Chat Minimum Account Age dropdown showing incorrect values
+
+# 2023-03-02 - ***Bug Fixes*** - 0.71.2
+• Fix rare crash in Anyone can Area Build worlds
+• Fix berry bushes and similar not dropping seeds
+• Fix flowers not dropping plant fiber (bug credit: Super Saiyan God)
+• Fix crash leaving ladders
+
+# 2023-03-02 - ***Faster Loading, Chat Control*** - 0.71.0
+• Greatly improve initial load time
+• Add Chat Minimum Account Age to world settings to block chat from newly created accounts
+• Add `/world_chat_minimum_account_age` for configuring this
+• Add `/photo_mode` command to toggle Photo Mode on and off
+• Add new contest tab icon
+• Improve 3rd person camera interaction with some mostly transparent props
+• Remove gems count display from welcome screen
+• Remove Worlds logo from customization screen background
+• Fix issue with jump particles sometimes being in wrong position
+• Fix players sometimes sliding in from the distance when coming into view
+• Fix allowing photos with custom textures to be saved in-game
+• Fix crosshair not being properly centered on devices with a safe area/notch/etc
+• Fix rare browser crashes on Chromium OS
+• Fix animations not playing on the paperdoll when quickly rotating the character
+
+# 2023-02-16 - ***Bug Fixes*** - 0.70.8
+• Fix bug when sitting on chairs facing north
+• Fix sky rendering bug when in photo mode and camera is far away from your character (bug credit: Satera)
+• Fix user names sometimes showing Admin colors after being demoted to no longer an admin (bug credit: Crowny)
+• Fix `Anyone can visit` world access preset not sticking if the world was previously private (bug credit: Satera)
+
+# 2023-02-10 - ***Bug Fix*** - 0.70.7
+• Fix player names sometimes getting stuck as semi-transparent
+
+# 2023-02-09 - ***Bug Fixes*** - 0.70.6
+• Fix crash when middle-clicking while placing water
+• Fix crash when closing the tab while still loading
+• Fix crash dropping buckets while drag-placing water in Lost Frontier
+
+# 2023-02-06 - ***Bug Fixes*** - 0.70.5
+• Fix player names disappearing / not respecting `Show other players` world option (bug credit: Axios)
+• Fix red dot showing up to visitors in a Settlement that has newly unlocked props (bug credit: Vongi)
+• Fix crash when being demoted to spectator while drag-placing blocks
+• Fix rare crash when showing chat message bubbles
+
+# 2023-02-02 - ***Better World Search*** - 0.70.3
+• Add support to more complex text-based world searches
+• Fix using wrong light wood lantern models in upper corners (bug credit: Mr. Aaron the cat)
+
+# 2023-01-30 - ***Bug Fixes*** - 0.70.2
+• Fix missing friends list and profile picture when logged in with Facebook
+• Fix crash sending chat while waiting for a world to load
+• Fix crash when using the browser's back/forward navigation right after attempting to go to a specific user
+
+# 2023-01-30 - ***Facebook tournament support and rewarded referrals*** - 0.70.0
+• Add reward for referring a friend to play the game and join a world for the first time in Facebook Instant version
+• Add Tournament support for Races in Facebook Instant version
+• Add per-Waygate option to restrict use of the Exitway to only those with Builder access
+• Add label to user info cards of official Worlds FRVR Team members
+• Add sound effects when starting and stopping to fly
+• Add sounds for placing and breaking Coal blocks/props
+• Add helper text to Dowser UI
+• Open customization menu when double clicking the welcome screen preview character
+• Fix Veinium Block's name from Veinium to Veinium Block (bug credit: Satera)
+
+# 2023-01-16 - ***Improve character controls and blueprint sharing*** - 0.69.11
+• Require naming a blueprint before sharing via link
+• Fix inconsistent character behavior when framerate is low
+• Fix friends list sorting to be case-insensitive
+
+# 2022-12-22 - ***Bug Fixes*** - 0.69.10
+• Fix bug with ladder collision checking
+
+# 2022-12-22 - ***Bug Fixes*** - 0.69.9
+• Fix crash when leaving a world after finishing a race
+• Fix unable to place some props underwater (bug credit: Satera)
+• Fix buggy scrolling of Recent Updates and similar screens on iOS 12
+
+# 2022-12-15 - ***Bug Fixes*** - 0.69.8
+• Fix blueprints getting stuck if they contained some old or invalid props that cannot be placed
+• Fix thumbnails not updating when applying a new voxel texture pack (bug credit: Klassen)
+
+# 2022-12-14 - ***Quality of Life and Bug Fixes*** - 0.69.7
+• Allow copying chat to clipboard with long-press on mobile devices (bug credit: Phoenix)
+• Improve readability of Exitway targets when Waygate names are very long
+• Denote unlisted Waygates when selecting Exitway targets
+• Fix sorting of worlds when defining Exitway targets to put frozen worlds last, recently created worlds first (bug credit: Satera)
+• Fix industry particles stopping when more than 100 of something have been crafted (bug credit: Axios)
+• Fix number of players indicator not showing up on thumbnails for the world you're currently in (bug credit: Satera)
+• Fix being allowed to plant crops underwater, which would then immediately uproot
+• Fix `/world_limit` not working in Lost Frontier worlds (bug credit: Satera)
+• Fix unable to search for blueprints containing non-ASCII characters (bug credit: Satera)
+• Fix unable to exit pointer lock by right clicking during the loading screen
+• Fix unable to use keyboard/gamepad to access buttons on error message dialogs while in a world
+• Replace invalid props placed by cheaters with yellow flowers
+
+# 2022-12-12 - ***Bug Fixes*** - 0.69.6
+• Fix '21 Holiday Sweater arm mismatch (bug credit: Satera)
+
+# 2022-12-12 - ***Holiday Outfits*** - 0.69.5
+• Add 2 new holiday outfits purchasable with gems
+
+# 2022-11-28 - ***Bug Fixes*** - 0.69.4
+• Improve help text when running /pos to indicate an admin can also change the setting (bug credit: Satera)
+• Fix unreleased testing blocks showing up with `/give`
+
+# 2022-11-17 - ***Bug Fixes*** - 0.69.3
+• Fix mouse over effect on world list sometimes not highlighting the right world
+• Change Coal-related sounds to be similar to Stone ones and add different sounds when landing on props of different materials
+• Fix dropped glass blocks and glass blocks in hand looking different than in-world (bug credit: Klassen)
+• Fix Block and Prop sorting order in Build Menu
+• Fix some crashes on very old browsers
+• Fix unable to place blueprints (bug credit: Atgrey)
+
+# 2022-11-14 - ***Character Customization*** - 0.69.1
+• Add new `Outfit Customization` system accessible from the welcome screen and inventory
+• Add 5 new outfits purchasable with gems
+• Add new sounds for bucket actions
+• Add new fall damage sounds
+• Add new sounds for placing and breaking metal and wood blocks
+• Add new Settlement upgrade sound
+• Add new item pickup sounds
+• Update dirt block placing sound
+• Fix one side of bluebox error prop looking different than the rest (bug credit: Mr. Aaron the cat)
+• Fix `/world_race_as_visitor` command not working as intended (bug credit: Satera)
+• Fix crash on old Chrome versions
+
+# 2022-10-24 - ***Microsoft Start support*** - 0.68.4
+• Add support for the Microsoft Start platform
+• Better show age requirement during account creation
+
+# 2022-09-29 - ***Tutorial Improvements and Bug Fixes*** - 0.68.0
+• Various Improvements to Lost Frontier Tutorial system
+  ◦ Add in-world indicators pointing to Settlement and Factory locations when required during Tutorial steps
+  ◦ Add UI indicators when upgrading Settlement and building Factory for the first time during Tutorial
+  ◦ Fix minor text issues in Tutorial descriptions
+  ◦ Fix inconsistent interactions between Tutorial system and To-Do list
+• Add a `Reset to Defaults` button in the Settings menu to reset all settings (including those only accessible via commands) to their defaults
+• Add colors to chat bubbles according to user roles
+• Chat color for world owners is now brighter and more readable
+• Highlighting users in chat will highlight all messages from that user
+• Visitors in lost frontier worlds are now able to hold torches
+• Fix placing water not properly enlarging blueprints
+
+# 2022-09-23 - ***Bug Fixes*** - 0.67.8
+• Fix crash related to chat messages during disconnects
+• Fix crash when removing race scores
+• Fix crash while starting a race while already in a different one
+
+# 2022-09-20 - ***Bug Fixes*** - 0.67.7
+• Fix a crash that occurs when using the /url command to join a user with a URL in the format `u/<user_id>/go`
+• Fix glass block texture becoming fully opaque when applying voxel packs (bug credit: Satera)
+• Fix crash display some screens on some old browsers
+
+# 2022-09-12 - ***Bug Fixes*** - 0.67.6
+• Fix bug that could cause two new worlds to be created at once when creating a new world (bug credit: SystemFRVR)
+
+# 2022-09-06 - ***Frozen Creators and Bug Fixes*** - 0.67.5
+• Change world info page to display owners of frozen worlds as "creator", with owner colors and at the top of the player list
+• Add border blocks around the Waygate in new empty worlds to make initial building easier
+• Fix sometimes needing to press the `Play` button twice on some mobile devices
+• Fix some build menu tabs disappearing if you click or tap the scroll bar
+
+# 2022-09-01 - ***Background Music and Go-To Player*** - 0.67.3
+• Add background music system
+• New feature: **Go-To Player**
+  ◦ On your friends list, or when viewing a user's details, the world thumbnail button will now teleport to their exact position within the target world if possible
+  ◦ If the selected user is within the same Free Pos world, a teleport icon over the button indicates that you can teleport within the current world to their position
+  ◦ You can construct a link to share, which teleports to your live location, with the URL `https://worlds.frvr.com/u/<user_id>/go`
+  ◦ Note: As before, setting yourself `/invisible 1` will prevent sharing your current world/location with other users
+• Adds colors to chat messages according to user roles
+• New glass block texture that reduces rendering issues around water/other glass
+• Performance improvements and memory usage reduction
+• Add prompt to guide first-time users in creating their first world
+• Add new `Empty` seed for flat worlds that contains only a Waygate
+• Add "Exit to Main Menu" as a potential Waygate target (credit: KornLS)
+• Allow chat while waiting at the loading screen
+• Fix some menus not centered correctly on some mobile devices
+• Fix occasional crash when entering world with an active race
+• Fix hang at loading screen when teleporting/waygating multiple times in quick succession
+• Fix `Q`uick-slot menu not locking the mouse cursor after selecting
+• Fix weird click interaction between the Clear Area progress dialog and the Area Access Control dialog (bug credit: Satera)
+• Fix rare crashes on some mobile browsers
+• Fix crash while loading into some worlds in some locations
+• Fix crash creating `Empty` flat worlds
+• Fix crash teleporting long distances
+
+# 2022-08-29 - ***Race Results Moderation*** - 0.66.10
+• Allow world admins and frozen world owners to remove scores in Race Results screen when viewed from the Race Goal Flag
+
+# 2022-08-23 - ***Quality of Life and Bug Fixes*** - 0.66.9
+• Adjust Settlement glowing beam colors so that your home Settlement is significantly brighter than others
+• Expand `/world_tool_lock` world setting to allow specifying `REGULAR`/`FAST`/`SUPER` tools
+• Add "Show in Build Menu" button to the blueprint info window when opening it from a blue box (credit: Satera)
+• Add separate section for your frozen (contest submission) worlds on the world list (credit: Satera)
+• Remove old message that would sometimes display when having connection problems immediately after logging in (bug credit: Aeya)
+• Hide the floating crafting progress indicator for bonfires, since they are primarily for decorative purposes anyway (credit: Satera)
+• Show unlisted Waygates after others in world info view (credit: Satera)
+• Change `/waygate` command to respect `Playing as: Visitor` and disallow unlisted waygates for easier testing (bug credit: Atgrey)
+• Improve world info screen for your Lost Frontier worlds to be less confusing as you cannot warp directly to arbitrary Waygates (bug credit: Mathy)
+• Fix `Ctrl+C` while logging in / renaming / etc taking a screenshot instead of copying text to the clipboard (bug credit: Klassen)
+• Fix build menu's Search results not sorting blueprints (bug credit: Satera)
+• Fix Passable Leaf Blocks to behave the same as Leaf Blocks with regards to water (bug credit: Satera)
+• Fix Visitors (who used to be Builders) drinking from energy well when standing on the Waygate (bug credit: Mathy)
+• Fix failing to lock the mouse pointer when joining a world from the main menu
+• Fix text overlapping buttons when repairing rare tools
+• Fix middle-click to pick losing current brush size (bug credit: Satera)
+• Fix login input fields unreadable on some browsers
+• Fix issues scrolling search tab on main menu (bug credit: HOTDOG)
+• Fix bonfires continuing to burn after fuel is consumed (bug credit: Axios)
+
+# 2022-08-13 - ***Bug Fixes*** - 0.66.7
+• Fix long-press to open quick-build or split stacks not working on mobile (bug credit: Forgot)
+• Disable placing gems via hacked blueprints
+
+# 2022-08-12 - ***Bug Fixes*** - 0.66.6
+• Disallow setting defines with `/D` that are guaranteed to crash (bug credit: Mathy)
+
+# 2022-08-12 - ***Bug Fixes*** - 0.66.5
+• Fix misplaced particles
+
+# 2022-08-11 - ***Bug Fixes*** - 0.66.4
+• Fix crash during drag-placing
+• Fix crash pressing Space while the cursor is over a scroll bar trough
+
+# 2022-08-11 - ***Bug Fixes*** - 0.66.3
+• Fix chat bubble related crash
+• Fix crash on Facebook Instant when the player name is not available
+
+# 2022-08-10 - ***Bug Fixes*** - 0.66.2
+• Fix crash renaming newly created blueprints
+• Fix crash happening while drag-placing
+
+# 2022-08-10 - ***Bug Fixes*** - 0.66.1
+• Fix crash when starting a race while already in a previous race
+• Fix unable to enter text in some circumstances on mobile devices
+
+# 2022-08-10 - ***Chat Cooldown*** - 0.66.0
+• Add Chat Cooldown to world settings
+• Add `/world_chat_cooldown` for configuring this
+• Add particle effects to Start Buzzer and Goal Flag
+• Add new jump particles
+• Add new Chat sounds
+• Add Credits section to Settings menu
+• Add instructions for account deletion
+• Crops can now drop harvest above themselves
+• Improve the Veinium grinder droprates and production
+• Improve controller and keyboard functionality in all UI
+• Fix head bug when passing rotation via URL
+• Fix CTRL+W page closing pop-up appearing unintentionally
+• Fix typo when playing as visitor (bug credit: Satera)
+• Fix minor visual glitch with Start Buzzers and Goal Flags
+• Fix text size of signs when close in first-person view (bug credit: Satera)
+• Fix bug when displaying world_race_as_visitor setting before changing it in world
+• Fix being unable to copy text from chat in main menu (bug credit: Satera)
+• Fix audio not working when only using a controller
+• Fix bug in Factory progress floaters
+
+# 2022-06-27 - ***Bug Fixes*** - 0.65.9
+• Fix visual glitch when checking Sign from behind with 3rd-person camera
+• Fix hang pressing Tab or LT while a visitor
+
+# 2022-06-17 - ***Bug Fixes*** - 0.65.8
+• Fix error when trying to move or edit a Waygate when not near the existing Waygate
+
+# 2022-06-15 - ***Bug Fixes*** - 0.65.7
+• Add note about how to disable `/max_fps` to the command's help text (recommended: `/max_fps 0` to remove any artificial limiting of performance)
+• Add display of the default setting to all commands that have them
+• Fix possible waygate list not sorted when adding a new Exitway Target (bug credit: Satera)
+• Fix crash if in a world when it gets deleted
+• Fix campfire initial rotation when placed (bug credit: Satera)
+• Fix crash removing bluebox if you lost Area access while in the blueprint interface
+
+# 2022-06-13 - ***Bug Fixes*** - 0.65.6
+• Fix Settlement beam drawing artifacts underground (bug credit: PW|BR)
+• Fix crash digging dirt under yellow berry bushes
+• Fix crash if you partially lose access while you have a blueprint box selected in an Access Area
+• Do not show partial dig progress when a world is under heavy load, to reduce latency
+
+# 2022-06-10 - ***Bug Fixes*** - 0.65.5
+• Fix issue with misplaced particles on Veinium grinder (Bug credit: honeypony)
+• Fix issue with missing ores when crafting using the Veinium grinder (Bug credit: honeypony)
+• Fix crash entering generated worlds near continent boundaries
+• Change cost for Veinium grinder from stone to ingot (Bug credit: Satera)
+
+# 2022-06-09 - ***Bug Fixes*** - 0.65.4
+• Fix "Build Contest!" button not working on Safari
+• Fix crash when joining a world with an ongoing race
+• Fix occasional crash entering a world (bug credit: Vingo)
+• Fix crash taking a screenshot with Ctrl+C exactly when loading finishes
+• Fix some other rare crashes
+
+# 2022-06-07 - ***100th Build Contest*** - 0.65.3
+• Add "Build Contest!" button to main menu with details for the 100th Build Contest
+• Fix able to manually delete a Settlement's Area, leaving it non-functional
+
+# 2022-06-06 - ***Access Areas*** - 0.65.1
+## Major Changes
+• New Feature: `Access Areas`
+  ◦ World Admins and Owners can define designated Areas which limit or enable building
+  ◦ New `Access Control` prop, under the Settlement category, that allows creating and editing Areas
+  ◦ New `Area Builder` access level which can only build within designated Areas
+  ◦ New `Anyone can Area Build` world access preset that defaults all users to Area Builders
+  ◦ In an `Anyone can build` world, place Access Areas set to `Read-only (Visitor)` to protect important areas
+  ◦ In an `Anyone can Area build` world, place Access Areas set to `Anyone can build` to allow people to build in just those Areas, or, assign individuals ownership of each Area for protected build spaces
+  ◦ In Lost Frontier, each Settlement now has a built-in Access Area, so the owner can configure who is allowed to build or access chests/factories within it
+## Notable Additions
+• Lost Frontier: Allow building multiple Settlements
+  ◦ You can only replenish energy or Waygate to your *Home* Settlement, buy can set a new Settlement as your home by visiting its Waygate, if you have build access there
+  ◦ Settlements must be far enough apart that their maximum size / Access Areas cannot possibly overlap
+• Remove limit on number of Waygate entryways per world
+• Add new Veinium Grinder factory that grinds Veinium into ore based on the factory location
+• Add new sound for opening Chests
+• Add new sound for opening and closing Doors
+• Add new sounds for jumping and landing
+• Add new sound for entering water
+• Add new sounds for harvesting plants
+• Update several UI sounds
+• Update sound for picking up items
+## Little Things
+• Rename `MEMBER` access to `BUILDER` for all commands to better match the interface
+• Lost Frontier: Placing first Waygate is now free (so you can easily move the default Settlement or establish a new one)
+• Lost Frontier: Reduce Settlement move/delete cooldown to 6 hours
+• Lost Frontier: Adjust tutorial to better handle starting in a world where you do not have build access to the default Settlement
+• Lost Frontier: Allow visitors and spectators to use Waygates to individual Settlements
+• Adjust Settlement beams to be visible at closer distances
+• Allow non-empty chests to be broken in Unlimited worlds without emptying contents first
+• Add `/settlement_beam_dist` and `/settlement_beam_in_photo_mode` to configure how beams of light into Settlements are displayed
+• Add `/world_area_clear` setting to set who is allowed to run *Clear Contents* on an Area (default: only owners)
+• Add `/world_race_as_visitor` to configure whether builders should do races as world Visitors or not (default: on in Unlimited worlds)
+• Add commands providing the same options as the Access Control interface: `/area_add`, `/area_delete`, `/area_access`, `/area_size`, `/area_shift`
+• New settings to control which boundary grids are visible: `/show_area_bounds`, `/show_settlement_bounds`, and `/show_bounds` (affects both)
+• New world access setting `/world_settlement` determines who can establish a new Settlement in a Lost Frontier world (default: BUILDER)
+• Add check-mark icon to indicate default Waygate and home icon to indicate the Waygate to your home Settlement
+• Made leaving from water to low height ground easier
+• Blueprints only build across Area boundaries if building into a less restrictive place
+• Fix moving a Waygate sometimes losing the associated image
+• Fix erroneous blocked indicator showing up when placing a blueprint with water overlapping a prop
+• Fix blueprint previews rendering wrong if the blueprint contains a large amount of water
+• Fix `/world_token 2` (or more) providing malformed text
+• Fix water simulation around borders of `Small` worlds
+• Fix `Ctrl+C` copy screenshot to clipboard to work in menus
+• Fix `I'm stuck` option not appearing more than once in a session
+• Fix not being able to sit in some positions
+• Fix lighting hint messages not being properly displayed in 3rd person view (bug credit: Russel)
+• Fix able to open up blueprint info panel for blueprints not in your library
+• Fix error when gathering water outside of bounds (bug credit: Mathy)
+
+# 2022-05-17 ***Bug fixes*** - 0.64.10
+• Fix issue with misplaced molten metal on tool-head cast (bug credit: shalmon)
+• Fix some dialogs including text entry appearing too small on some mobile devices (bug credit: Russel)
+• Fix flash when dismissing Settlement upgrade and crafting completion dialogs on some devices
+• Fix incorrect animations when finishing crafting tools and unlocking new Settlement tiers
+
+# 2022-04-28 ***Bug fixes*** - 0.64.9
+• Display passable leaf blocks the same as leaves in the F3 debug cursor for all users except world admins in unlimited worlds
+• Fix Race start and end props not lit up while active
+• Revert wood palette change that accidentally happened in `0.64.0`
+• Fix misc. Race bugs when refreshing after submitting Race score
+• Fix crash when abandoning race while changing world at the same time
+• Fix sliding feet when landing from a jump
+• Fix some issues with particle positions
+
+# 2022-04-28 ***Bug fix*** - 0.64.8
+• Fully disable temporary Easter Egg outfit
+• Fix rare crash viewing world info while other players are connecting
+
+# 2022-04-22 ***New Block, Old Bugs*** - 0.64.7
+• Add new `Passable Leaf Block`, for all of your secret passageway and trap building needs
+• Fix sun/sky rendering artifacts on Adreno 610 GPUs (Xiaomi/OnePlus phones)
+• Fix disappearing pies from inventory (bug credit: Dino)
+
+# 2022-04-21 ***Bug fixes*** - 0.64.6
+• Fix crash displaying dates in some browsers
+• Fix plants placed hovering in air due to lag (bug credit: Satera)
+
+# 2022-04-18 ***Bug fixes*** - 0.64.5
+• Fix snowman color
+• Fix crash when multiple players try to pick up a bag in the space a blueprint is building (bug credit: Abinash)
+• Fix errors when building in the same space that a blueprint is building in Lost Frontier, or when two blueprints are trying to build into the same space (bug credit: Forgot)
+• Fix crash if you were kicked from a while while resetting your inventory
+• Fix crash attempting to delete blueprint while disconnected
+
+# 2022-04-15 ***Happy Easter!*** - 0.64.4
+• Add a temporary Easter Egg (available for all until Apr 24th)
+• Fix spice plants not dropping spice (bug credit: shalmon)
+
+# 2022-04-14 ***Bug fixes*** - 0.64.3
+• Fix not being able to get Mushrooms into inventory (bug credit: Maria)
+• Fix not being able to get Roast Corn into inventory (bug credit: vhtl)
+• Fix some invalid `/give` item combinations
+
+# 2022-04-13 ***Bug fixes*** - 0.64.2
+• Adding/removing a blueprint now is reflected in all open tabs
+• Exclude common blueprint text in search index, so searching for "blue" doesn't include every blueprint (credit: Satera)
+• Fix dropped items falling through otherwise solid props (bug credit: Satera)
+• Fix useless "Settlement Info" button showing up for visitors in Lost Frontier worlds (bug credit: Satera)
+• Fix unable to drag inventory items when the todo-list under them is scrollable (bug credit: Satera)
+• Fix bug that caused "inventory full" messages to stack instead of refreshing (bug credit: DarKLife)
+• Fix unable to select torch with `F` after playing as a viewer and then gaining build access (bug credit: Atgrey)
+• Fix crash selecting torch with `F` while drag-placing blocks
+
+# 2022-04-11 ***Minor Graphics Update*** - 0.64.0
+• Improved coloring on crops to better indicate which need watering
+• Add new models for crude tools
+• Adjust metal tint colors
+• Minor improvements to text rendering performance and visuals
+• Add particles upon jump and landing
+• Improve coloring for digging and mining particles
+• Add sound effect when taking fall damage
+• Fix landing animation
+• Limit rendering to 400 props per chunk, to limit the performance impacts of griefing
+• Add `/max_props_per_chunk` which can (temporarily) override this behavior on your client only (other players will still not see excessive numbers of props)
+• Add "Any Filling" entry to "Any Pie" recipe info card
+• Add "Any Vegetable" entry to "Any Roast Vegetable" recipe info card
+• Fix lighting on particle effects underground
+• Fix bug that caused some crops to be both harvested and dug all in one click
+• Fix some illegal `/give` attribute combinations resulting in crashes
+• Fix wrong name for "Any Roast Vegetables" entry in recipes
+• Fix editing a blueprint containing only a Waygate temporarily increasing the cost of Waygates (bug credit: JJ Gaming 178)
+• Fix display of incorrect energy gain on `Any Sandwich` item info card (bug credit: Casimiro)
+
+# 2022-04-07 ***Bug fixes and minor tweaks*** - 0.63.14
+• Changed signs to have text only, and no panel behind it.
+• Reduce stamina used to water crops and fill buckets
+• Fix filling buckets sometimes not consuming stamina
+• Fix error in text after changing your display name (bug credit: KornLS)
+• Fix crash when starting and / or finishing races without position being up-to-date
+• Fix a crash when setting position to very large numbers through the URL
+• Fix crash caused by misbehaving browser extension
+
+# 2022-04-02 ***Heads on straight*** - 0.63.13
+• Fix heads that weren't attached to the right bodies
+
+# 2022-04-01 ***Bug fixes*** - 0.63.12
+• Fix bug that was causing mobile devices to place water immediately after gathering it (bug credit: Forgot)
+• Fix bug that caused cursor to show invalid block placement previews when using 2x2 or 3x3 placement (bug credit: Satera)
+• Fix crash purchasing outfit while disconnected
+• Fix crash from misbehaving browser extension
+• Fix crash placing Blueprints in Lost Frontier if you could not afford the Blueprint box
+
+# 2022-04-01 ***April 1st quality of life and bug fixes*** - 0.63.10
+• Appropriately color the name of the creator of a now-frozen world the same as a world owner (bug credit: Satera)
+• Add `/kb_speed` setting to reduce the movement speed when using keyboard
+• Add `/chat_show_join_leave` setting to enable/disable join/leave messages in chat
+• Allow placing coal blocks in Lost Frontier directly (already could via Blueprint) (bug credit: Mathy)
+• Change cost of pile of coal prop to 1 coal
+• Blueprint boxes now cost 1 stone to place in Lost Frontier
+• Fix heads that weren't attached to the right bodies
+• Fix crash moving while disconnected
+• Fix crash editing Waygate targets while someone else removes a Waygate from the world you're targeting
+• Fix user's display name not showing up when viewing blueprints
+• Fix crash when leaving world while abandoning race
+• Fix tilled dirt on top of/under watered tilled dirt not looking correct (bug credit: Satera)
+• Fix seeds in Unlimited mode not showing their Lost Frontier cost and incorrectly saying they were only placeable in Unlimited mode
+
+# 2022-03-29 ***Blueprint performance and bug fixes*** - 0.63.9
+• Fix slowdown viewing blue box for large editable blueprints
+• Fix crash if disconnected while loading Facebook friends list
+• Fix typo on Main Menu on Facebook
+• Fix several Facebook sharing prompts not appearing when they should
+• Fix Croissant Recipe not being properly looked up when coming from Spiced Croissant's ingredients
+• Fix Oven lookup matching non-spiced variants for the spiced recipe
+• Fix Race UI continuing to appear after leaving race and coming back to world (bug credit: vthl)
+
+# 2022-03-21 ***Bug fixes*** - 0.63.8
+• Fix crops not growing or changing stages even if there was room to do so
+
+# 2022-03-21 ***Bug fixes*** - 0.63.7
+• Fix blueprints saving the contents of some props
+
+# 2022-03-16 ***Minor bug fixes*** - 0.63.6
+• Fix tool head casts flipping incorrectly in blueprints (bug credit: Atgrey)
+• Add messages when trying to break unbreakable props such as Race Goals with a name assigned
+• Add message when restarting current race
+• Fix incorrect message when trying to use the wrong tool to mine a block (bug credit: Russel)
+• Fix Race Goal Flag and some crops forcing camera from 3rd-person to 1st-person (bug credit: Satera/Atgrey)
+• Fix not being able to edit race course names without having enough materials in Lost Frontier mode
+• Fix `Abandon?` button staying on screen while abandoning race
+• Fix Race Goal Flag interaction distance
+• Fix crash when submitting race results
+• Fix bug with floating name appearing when it should not in photo mode (bug credit: Satera)
+
+# 2022-03-15 ***Minor bug fixes*** - 0.63.4
+• Fix energy wells losing track of last use time after a page refresh (bug credit: valued Discord user)
+• Fix various digging and placement bugs when just at the end of the placement/dig range or when standing inside of a prop
+• Adjust tool head cast player collision height to 1 to better match the model
+• Fix incorrect message when digging dense stone (bug credit: KornLS)
+• Fix crash viewing blueprint links
+• Fix metal bonfires being labeled "Stone Metal Bonfires" (bug credit: Satera)
+
+# 2022-03-10 ***Races*** - 0.63.2
+## New Feature: **Races**
+• New props: `Race Start Buzzer` and `Race Goal Flag` - place them, connect them, and race!
+• New World access settings: `/world_race_join` (default Visitors) and `/world_race_edit` (default Admins) for configuring who can join and edit races
+• New commands: `/group_race_start` and `/group_race_end` for simultaneously starting a race for all users in a world
+• Note: these were previously referred to as *Time Trials* and *Buzzers* while being tested
+## Race Improvements
+• In a Group Race, display a message to all users when the race is first completed
+• Added new Start Buzzer and Goal Flag models
+• Clicking another race start buzzer while in a race now starts race instead of just canceling previous one
+• Fixed Facebook names appearing incorrectly in race high-scores (bug credit: Satera)
+• During a race, scores for other courses will now not be shown
+• Added sound effects to Race events
+## New prop: Bonfires
+• In Lost Frontier, these slowly convert wood to coal
+• In Unlimited worlds, these always burn
+## Lost Frontier
+• Clicking the "I'm stuck!" button will now make player immune to fall damage during 10 seconds
+• Reduced the cost of watering system and increased how long it lasts
+## General
+• A new "Floaty Rocks" biome type can be found in the mountains of generated worlds
+• New Tool Head Cast model
+• Add placeholder sounds for more game actions
+• Remove `/world_waygate OWNER` option, as world admins could always change it back anyway
+## Bug fixes
+• Allow picking items (middle-click) through water even when holding a bucket (bug credit: Satera)
+• Fix Access Preset flickering back and forth immediately after changing it on the world info view
+• Fix Waygate not being centered in new Small worlds (bug credit: KornLS)
+• Fix crash submitting access tokens while disconnected
+• Fix lighting artifact on edges of blocks placed above glass blocks
+• Fix world info view display when the race results need scrolling (bug credit: Satera)
+• Fix bug that caused a floating highlight block on wrong positions (bug credit: Satera)
+• Fix crash while sharing blueprints
+• Fix large number formatting in world info view (bug credit: Satera)
+• Fix highlight not appearing while digging some props
+• Fix middle-click picking props made from stone getting an extra "Stone" prefix when picked (bug credit: Satera)
+
+# 2022-03-04 ***Misc fixes*** - 0.62.15
+• Fix removing an item from a bag you just added to sometimes causing inventory to get out of sync and deleting or duplicating items (bug credit: Satera and Vaibhav)
+• Change Woodcuttery to require only 1 tool head to prevent converting one tool head type to another upon deconstruction
+• Deleting an editable blueprint will now stop any placed instances of it from continuing to build
+• Fix error showing up when picking up and dropping items in quick succession and then placing a block over the bag
+
+# 2022-02-28 ***iOS 9 fix*** - 0.62.14
+• Fix text not visible on iPads running some versions of iOS 9 and related
+
+# 2022-02-25 ***Minor bug fixes*** - 0.62.13
+• Fix crashes coming from a misbehaving browser extension
+• Fix crash picking with middle click in an area that was still loading
+• Fix crash consuming corn mushrooms (?)
+
+# 2022-02-21 ***Minor bug fixes*** - 0.62.12
+• Fix unlimited mode single-tap actions not working on mobile (bug credit: Mathy)
+
+# 2022-02-18 ***Minor bug fixes*** - 0.62.11
+• Fix watered tilled earth block using wrong brush size (bug credit: Satera)
+• Fix minor visual issue on floating Buzzer names / scores
+• Fix animations in sitting transitions and bug when moving from one chair to another
+• Fix crash caused by inventory changes during prop placement
+• Fix bags visually disappearing when other bags fall into them
+• Fix needing to double tap to interact on mobile
+
+# 2022-02-15 ***Rollback*** - 0.62.10
+• Revert part of previous update, was causing players to be unable to interact with doors or other props
+
+# 2022-02-15 ***Easier Watered Tilled Dirt*** - 0.62.9
+• Allow directly placing watered tilled dirt in Unlimited mode worlds and blueprints
+• Fix bug that caused tool slowdown (bug credit: Satera)
+• Fix crash caused by inventory changes during prop placement
+
+# 2022-02-14 ***Minor bug fixes*** - 0.62.8
+• Fix crash during drag-placement
+• Fix crash running `/disconnect` when already disconnected
+
+# 2022-02-11 ***Minor bug fixes*** - 0.62.7
+• Fix crash when water flows over old berry bushes
+• Fix case where water simulation could get stuck
+
+# 2022-02-11 ***Minor bug fixes*** - 0.62.6
+• Fix crash viewing Settlement unlocks beyond the first few tiers
+
+# 2022-02-11 ***Minor bug fixes*** - 0.62.5
+• Fix swimming idle animation not working
+• Limit display to only 10 users in the "Other users already here" message upon joining a world
+• Don't allow admins to kick owners or other admins (bug credit: Russel)
+• Use "Unknown World" instead of "An unknown place" phrase in user presence display and photos
+• Fix various crashes related to changing quickbar/inventory contents while in the middle of placing objects
+• Fix crash displaying particular error messages
+
+# 2022-02-10 ***Minor bug fixes*** - 0.62.4
+• Fix crashes while placing props while recovering from a mispredict
+• Fix crashes when interacting with time trials and getting disconnected from a world
+
+# 2022-02-09 ***Bug fixes*** - 0.62.3
+• Fix crash building while someone enters your world (bug credit: funi space man)
+• Fix unreleased item mistakenly showing up in Settlement unlock list (bug credit: K007)
+• Fix likes and views numbers in the HUD going to 0 after being in a world for a while (bug credit: Yanzky)
+• Fix crash if you try to contribute a resource to a settlement upgrade that someone else completed while you had it selected
+• Fix crash placing editable blueprints
+• Fix being kind of able to build and move while a dialog is up on mobile (bug credit: Mathy)
+• Fix tilling with hoe not consuming durability
+• Fix interaction issues with crops while holding an empty bucket
+• Fix case where a single click could interact with multiple props
+
+# 2022-02-08 - ***Crouching*** - 0.62.0
+## New Features:
+• Automatically crouch to get through 3-block-high spaces
+## User Interface
+• Placing and gathering water now behave more similarly to other block types
+  ◦ Can drag-place
+  ◦ Consumes stamina to gather in Lost Frontier
+  ◦ Can press and hold to continuously gather
+• Tilling earth with a hoe now behaves more similarly to digging
+• Fix `Kick` button not showing reliably in the user info view for world admins
+• Change kicking from a world so that the kicked user no longer automatically re-joins the world
+## Graphics
+• Added ladder climbing animations
+• Updated Campfire, now includes particles in Unlimited worlds and when active in Lost Frontier
+• Updated Blue and Yellow Berry Bush models
+• Updated Stonecuttery
+## Misc
+• Lots of work preparing the game for localization, please let us know if any game text looks broken
+• Change `/world_single_client` option to default to `1` (enabled) for newly created worlds
+• Reduce data usage for viewing the world list, to improve loading times
+• Add workaround for misbehaving proxy servers mangling our packets
+• Fix getting stuck at a black screen on Yandex if you choose not to log in
+• Fix ladder transition issue
+• Fix sorting of wood / light wood and related planks to be consistent (bug credit: Satera)
+
+# 2022-02-07 ***Minor bug fixes*** - 0.61.13
+• Fix crash trying to deposit into a bluebox while recovering from a prediction error
+• Fix crash from misbehaving Grammarly browser extension
+• Fix crash from other misbehaving browser extensions
+• Fix crash when playing Worlds through the Instagram or Facebook web view
+
+# 2022-02-03 ***Minor bug fixes*** - 0.61.12
+• Fix crash when encountering unknown or old data in certain worlds
+
+# 2022-01-31 ***iOS Character Rendering Fix*** - 0.61.11
+• Fix characters rendering completely black at startup on iPhone 6 running iOS 12 (and similar)
+• Fix rendering artifact around character's necks while looking down
+• Add workaround for Firefox bug causing mouse cursor to drift when OS is set to 150% Scale (and similar)
+
+# 2022-01-21 ***Minor bug fixes*** - 0.61.10
+• Fix some errors on old browsers
+
+# 2022-01-18 ***Minor bug fixes*** - 0.61.9
+• Fix login issue with Yandex on iOS
+• Fix quickbar tooltip on slotted tools sometimes saying "(broken)" when they're now finding a non-broken tool in your inventory (bug credit: Satera)
+• Fix bug where chat messages would sometimes show your old display name for a while after renaming (bug credit: Satera)
+• Fix bug where buckets and consumables would be pulled out of the trash to be used via quickbar under some circumstances
+
+# 2022-01-14 ***Minor bug fixes*** - 0.61.8
+• Fix crash on mobile devices with `Mali-400 GP` GPUs
+
+# 2022-01-12 ***Minor updates*** - 0.61.7
+• The 4 exclusive outfits for the 2021 holiday season will no longer be purchasable as of February 1st
+• Change newly created `Small` worlds to be 48x48x48, in preparation for upcoming features
+• Fix flicking when rendering large numbers of dynamic objects in some circumstances
+• Fix /time not working correctly immediately after creating a new generated world (bug credit: Satera)
+
+# 2022-01-06 ***Minor bug fixes*** - 0.61.6
+• Fix `Max Jump: Tap` button not working on keyboard devices (bug credit: Satera)
+• Fix *Kick* button not showing up in a user's context menu and `/kick` not working reliably
+• Fix lighting on particles to be consistent with other lighting
+• Improve page loading speed especially if Facebook is slow
+• Fix some errors on old browsers
+
+# 2021-12-17 ***Easier Max Jumping and Minor bug fixes*** - 0.61.5
+• Add `Max Jump:` `Tap` / `Hold` setting to control whether a single tap jumps to maximum height or if you must hold to do so.
+• Exposed this setting as `/max_jump_tap_touch` (default: 1) and `/max_jump_tap_kb` (default: 0) on touch/keyboard devices
+• Ignore errors from more misbehaving Chrome extensions
+• Fix crash if you try to screenshot with `Ctrl+C` and your browser or Facebook blocks clipboard access
+• Fix particles not successfully disabling on incompatible GPUs
+• Fix some login errors not displaying correctly
+• Fix some crashes logging in with Facebook
+
+# 2021-12-16 ***Player names in photos*** - 0.61.4
+• Add `/show_names_photos 1` to include player names in photos
+• Fix issues with Watering Systems in Blueprints (sometimes included water, eventually generated errors) (bug credit: Satera, Mathy)
+• Fix occasional error logging in on Facebook
+
+# 2021-12-13 ***Signs in photos*** - 0.61.3
+• Include sign text in photos
+• Disable particles if the GPU is unable to run the shaders
+• Fix crash when resizing browser window very small
+• Fix `/view_dist` allowing invalidly low values (less than 5)
+• Fix crash logging in a second time on Yandex
+• Fix crash loading page on old browsers
+
+# 2021-12-09 ***Minor bug fixes*** - 0.61.1
+• Fix snowman's hat being off-centered (bug credit: Satera)
+• Fix getting stuck at loading screen if some browser privacy settings were enabled
+• Fix not loading on a few old video cards
+
+# 2021-12-06 ***Particle Effects and Holiday Outfits*** - 0.61.0
+• Add particle effects to all active factories, block breaking, harvesting, watering, etc
+• Add 4 new purchasable holiday outfits - these outfits are permanent once unlocked, and will be available for sale exclusively during the 2021 holiday season
+• Add new setting `/max_dynamic_draw_calls` that configures how roughly many dynamic objects (particle systems, bags, doors, etc), are drawn each frame (default: 300).  Lowering this may improve performance.
+• Add new world option, `/world_photo_move 0`, to disable moving away from your avatar while taking a photo
+• Allow clearing text on signs
+• Fix keys getting stuck on MacOSX if released while the `command` key was down
+• Fix ending up in the wrong place if using a Waygate while taking a photo
+• Fix placing flipped blueprints not rotating some objects (factories, doors) correctly in some situations
+• Change chipped edge on dark wood lanterns to color variation instead
+• Fix numerous rare crashes
+
+# 2021-12-02 ***Minor bug fixes*** - 0.60.6
+• Server performance improvements
+• Fix Energy Well auto-drinking happening while outside of settlements (bug credit: DaProKitty)
+
+# 2021-11-23 ***Minor bug fixes*** - 0.60.5
+• Fix text boxes on login screen to properly show next/previous buttons on more mobile device keyboards and better work with password managers
+• Fix some crops rotating randomly when nearby objects change
+• Fix rare error placing blueprints with larger props
+• Fix 'Forget...' button showing up on your own frozen worlds (bug credit: Klassen007)
+
+# 2021-11-17 ***Minor bug fixes*** - 0.60.4
+• Hide chat/sign text while taking a photo since they are not included in the saved photo
+• Increase maximum `/view_dist_temp` limit for screenshots (warning: will crash browser above some values)
+• Fix build menu/interactable UIs split/integrated options not showing up in unlimited worlds
+• Fix bug where if you get stuck via waygates or other circumstances it would not let you get unstuck until all blocks were removed
+• Fix crash deleting a blueprint while disconnected
+
+# 2021-11-15 ***Minor bug fixes*** - 0.60.3
+• Convert days to years in `/world_playtime_all` and related commands
+• Fix "Logged in as" label not showing your user ID on some devices
+• Fix unable to copy your user ID from the welcome screen when playing on Facebook
+• Fix crash if getting disconnected while logging in
+
+# 2021-11-11 ***Minor bug fixes*** - 0.60.2
+• Fix flickering if the camera is embedded in a block and nearby chunks are loading
+• Fix looking like a plant was dropping its crop twice when harvested by two people at approximately the same time (bug credit: Mathy)
+
+# 2021-11-10 ***Facebook play anywhere*** - 0.60.1
+• Add Facebook login when accessing Worlds FRVR on web
+• Do not set the world creation time until the first continent is generated, to have more accurate speed run times on slow connections
+• Fix blueprint library sometimes not being sorted (bug credit: Satera)
+• Fix crash when using a mod to provide unreasonable continent data and instead let you spawn somewhere bad if there are no good spawn locations
+• Fix crash that was probably caused by thousands of signs in one spot
+• Fix crash setting sign text if you get disconnected or leave the world while editing a sign
+
+# 2021-11-09 ***Signs in the sky*** - 0.60.0
+• Add new prop: **signs**
+• New sky rendering with more vivid colors, slightly shorter dark night, better underwater, and better performance
+• Improve lighting to give more definition in shadowed areas and torch light
+• Fade in the world as it loads
+• New block, *Ore in Veinium*, and new texture for *Veinium* block that should make it much more distinguishable, especially while mining in dim light
+• New models for many props and components, including: Aetherbench, tool head cast, paint mixer, mill, juicer, plant fiber, leftovers, tomato, pumpkin, sugarcane,
+• Skeletons have returned to normal
+• Add `/world_created` to display exact time of world creation
+• Display version number on main menu and options menu
+• Fix `/D` clearing unrelated errors while reloading shaders
+• Fix taking fall damage upon entering a new world if you were falling when you left the previous world (bug credit: SayfuraIndo)
+• Fix not taking fall damage when stopping via entering a chair
+• Fix visual artifacts in chat bubbles under some circumstances
+• Fix wood door #2 (and similar) not showing up in search tab of build mode
+• Fix carrot crop to use the same colors as the harvested carrot
+• Fix grammar error in '1 loads' message (bug credit: Mathy)
+
+# 2021-10-28 ***Chat bubble improvements*** - 0.59.0
+• Add tail to chat bubbles
+• Better handling of overlapping chat bubbles
+• Add work around for iOS 15 bug and re-enable WebGL2 on iOS Safari
+• Fix crash if saving multiple blueprints at the same time on slow connections
+
+# 2021-10-24 ***Bugfix*** - 0.58.1
+• Fix dowsers being less effective (bug credit: Yug_The_Builder)
+
+# 2021-10-21 ***Halloween Spirit*** - 0.58.0
+• The skeletons have gotten into the holiday spirit!
+• Fix settings not persisting after a reload (bug credit: Satera)
+
+# 2021-10-20 ***Bugfixes*** - 0.57.2
+• Fix profanity filter not applying to chat bubbles (bug credit: Yanzky)
+• Fix ladder-related crash
+• Fix crash with chat bubbles while loading into a world
+• Fix additional network disconnect errors
+• Fix crash on old Chrome versions
+
+# 2021-10-11 ***Ladders and Chat bubbles*** - 0.57.0
+• Add chat bubbles
+• Add ladders
+• Fix bug where idling for more than 30 seconds would make players unable to wave (bug credit: ATGREY)
+• Fix bug on mobile, where interacting with crops would make you harvest them too fast (bug credit: JJJRR)
+
+# 2021-09-27 - ***Crop balance*** - 0.56.0
+• Corn now yields more ears as it grows to full
+• Rebalance crop seed drop rates so crops generally give 1 seed back
+• Fix flicker when transitioning to/from being underwater
+• Fix some visual artifacts when underwater
+
+# 2021-09-23 - ***Quick exit*** - 0.55.5
+• Add `/quit` to quickly return to the main menu
+• Fix additional network disconnect errors
+
+# 2021-09-22 - ***iOS 15 Fix*** - 0.55.4
+• Disable WebGL 2 on iOS Safari, as it's currently causing browser crashes
+• Fix various errors that can happen while logging out
+• Ignore errors from more misbehaving Chrome extensions
+
+# 2021-09-21 - ***More minor bugfixes*** - 0.55.3
+• Fix various crashes upon reconnecting after network disconnect
+
+# 2021-09-20 - ***Minor bugfixes*** - 0.55.2
+• Fix unable to change FOV under some circumstances
+• Fix moving from one chair to another resetting to 3rd person view
+• Fix forced teleport to Waygate happening upon network disconnect in some worlds (bug credit: Zogrot)
+
+# 2021-09-17 - ***Minor bugfixes*** - 0.55.1
+• Remove black outline around game view showing up on latest Chrome version
+• Fix occasional error when getting kicked from a world
+
+# 2021-09-14 - ***Smoothing*** - 0.55.0
+• Change 1★ Dense stone layer to contain only tin (removed copper)
+• Change how we deal with network disconnects to greatly reduce the possibility of errors
+• Add some camera smoothing when sitting
+• Fix sitting not being properly canceled by other actions
+• Fix some tooltips on touch devices referencing keyboard shortcuts
+• Fix "Latest News" button on Facebook getting a notification red dot even when nothing is new
+• Fix crash sitting while flying (bug credit: IceSpikes)
+• Fix some Facebook users unable to log in
+• Fix crash if actively digging when your build access is revoked
+• Fix crash walking in worlds with some old/corrupt data
+• Fix your own worlds showing up with old names momentarily on the world list
+• Fix errors with your own worlds having invalid names (bug credit: JJJRR)
+
+# 2021-09-03 - *Blueprint fix*
+• Fix errors building blueprints (bug credit: TheHornet)
+
+# 2021-09-02 - ***Easier Unlimited Mode Tool Access*** - 0.54.0
+• Players in Unlimited worlds are now automatically given a set of regular/fast/super tools that can be equipped through the inventory to adjust block breaking speed
+• Fix To-Do List sometimes showing larger value while depositing resources into a Settlement upgrade (Bug credit: Mathy)
+• Fix some items changing material when dropped on top of other items
+• Fix unable to use an empty bucket to remove water from blocks containing some props (bug credit: Satera)
+• Fix placing water adjacent to props behaving differently than placing blocks
+• Fix middle-click picking watered tilled earth selecting dirt instead of (unwatered) tilled earth
+
+# 2021-08-30 - *Minor fixes*
+• Ignore crashes from a misbehaving browser extension
+• Fix crash when swapping from a good input combination to a bad combination on a running factory
+• Fix crash if you sort and shift-click a (now empty) inventory slot on the same frame
+• Fix crash viewing changelog if it fails to load
+• Fix crash dropping items on the paper doll while recovering from a network mispredict
+
+# 2021-08-27 - *Minor fixes*
+• Reorder auto-generated help output of some commands so the current value is always displayed as the last line
+• Simplify loading display to only show number of loads pending if things are stuck, otherwise just flips a spinner whenever a load finishes
+• Fix 1 frame flicker when toggling into edit mode on the world info view
+
+# 2021-08-25 - *Minor bugfixes*
+• Fix being able to use campfire to spawn trap
+• Fix some errors caused by disconnecting/reconnecting
+• Fix being able to place sugar (will likely be placeable in the future with different assets)
+• Fix drag place with 3x3 brush sometimes placing 3x2
+• Change F3 / debug cursor to behave more consistently regardless of quickbar selection
+• Remove invalid Spice items
+
+# 2021-08-23 - ***Undo Trash*** - 0.53.0
+• Change `Trash` button to act like an extra inventory slot, so that you can pull the last thing out of the trash if required
+• Change glass recipe to require 3 sand + 1 fuel to make 4 glass (down from 1 + 1 to make 1)
+• Change charcoal recipe to require only 3 wood (down from 4)
+• Add context button to equip directly from chests
+• Add description to tin/gold/silver ingots noting they are not useful for making tools
+• Unhide the tutorial if someone else completes the first step while it's active, to cause less confusion (bug credit: DragonDMS)
+• Fix lighting instructions showing up in F8 / NOUI mode
+• Fix able to store things in factory output slots under some circumstances
+• Fix photo links not behaving like links in chat
+• Fix mouse look not working on old Firefox versions
+• Fix audio crash on old Firefox versions
+• Fix some invalid items causing errors
+
+# 2021-08-19
+• When sharing photos, serve full-resolution images to improve Discord previews
+• Decrease rainshadow and increase noise on humidity map of continent generator to ensure fewer giant contiguous forests
+• Fix some issues with moving camera in photo mode
+• Fix erroneous URL and last Waygate if you were viewing a different world's info and exited the menu with another menu's hotkey
+• Fix occasional strange glowing flowers
+• Fix `V` hotkey not toggling third person (bug credit: Spacy)
+
+# 2021-08-18 - ***Removing Lost Frontier Viewer Limits and Tin Hint*** - 0.52.0
+• Add system to limit the number of users have been assigned Builder or higher roles in a world, with a limit of 4 in Lost Frontier worlds and 100 in unlimited worlds
+• Remove 4 player limit from Lost Frontier worlds, now allowing the usual number of spectators or viewers
+• Add details describing in what tier of stone and at what depth each ore can first be found to the Item Info view, for ores that are not found on the surface
+• Change Tin Pickax to only gather to the same stone tier as Copper, so as not to trick anyone into making one
+• On Facebook add button to trigger the streams overlay on the main menu
+• Fix switching to gathering tools while in the middle of a drag placement not respecting brush sizes (bug credit: Satera)
+• Attempting to switch quickbar slots or modes (e.g. with `X` or `Z`) now always cancels a drag placement
+• Fix crash sharing photo on Facebook if the photo failed to load
+
+# 2021-08-17 - ***Photo Mode Improvements*** - 0.51.0
+• You can now toggle between controlling yourself or the camera in Photo Mode to set up the perfect shot
+• Allow time of day in Photo Mode in Lost Frontier worlds
+• In Photo Mode, the menu button / `E` now toggles the options
+• Limit photo mode distance from player in Lost Frontier
+• Photo mode improvements with `F8` / `/d NOUI`
+• Fix stamina/oxygen not being consumed while in menus
+• Fix crash on Firefox if privacy settings block gamepad access
+• Fix crash if you are disconnected from a world while renaming a Waygate
+
+# 2021-08-16
+• Fix crash moving source item out of factory on the same frame it's consumed
+• Fix rare crash with water uprooting plants/crops
+• Fix rare crashing dragging from the build menu onto the gathering tools icon
+• Fix rare crash doing Quick Deposit into multiple chests
+
+# 2021-08-14
+• Fix unable to use props in blueprints
+
+# 2021-08-13
+• Fix unable to `Take` from crafting outputs when only a partial stack would fit in your inventory (bug credit: Satera)
+• Fix being unable to destroy some old invalid items (bug credit: Hacker Lion)
+• When placing, repair old blueprints containing invalid items (bug credit: Hacker Lion)
+• Fix erroneous message on shovel descriptions (bug credit: Satera)
+
+# 2021-08-12
+• Fix share button and To-Do list conflicting with Cancel button while doing a drag placement of blocks on touch devices (bug credit: DragonDMS)
+• Fix Backspace navigation hotkey triggering while entering search text (bug credit: Satera)
+• Fix blue plains having significantly more berry bushes than their red or yellow counterparts (bug credit: Atgrey)
+• Fix `F8` / `/D NOUI` not applying to tool durability, To-Do List, and some Lost Frontier overlays
+
+# 2021-08-11
+• Add "Latest News" button on Facebook to go to official Facebook group
+• Add "Invite" button on user info view if they're a Facebook friend
+• Add blinking to red dot notifications
+• Use consumables from smallest stacks first (bug credit: Satera)
+• Fix double-tapping in build menu sometimes not selecting and closing the build menu
+• Fix double-tapping in build menu sometimes leaving the item info view open
+• Fix some tooltips with keyboard shortcuts showing up on touch devices
+• Fix errors loading some Facebook friends' profile pictures
+
+# 2021-08-10
+• Add world seed to debug cursor (F3) info
+• Fix two bags appearing in the world while dropping tools
+• Fix crash generating worlds with some seeds
+• Fix data out of sync if loading multiple chunks right while someone was editing one
+• Fix rare crash on touch devices
+• Fix crash if you transition from a world info screen to the build menu
+
+# 2021-08-09
+• Fix crash viewing a friend's user info on Facebook if a friend's profile picture is unavailable
+• Fix crash if removing crafting outputs on the same frame they were created (bug credit: king cody coal master)
+• Fix crash if someone else changes a crafting station's recipe such that you momentarily have an invalid input selected
+• Fix crash if someone else adds to a stack in a container at the same time you swap it with something else
+• Fix rare crash if network delay happens right when upgrading a Settlement
+• Fix crashes on older browsers (Chrome <53, IE, etc)
+• Fix crash looking up crafting recipe for metal buckets
+• Show builder / viewer count separately on world info
+
+# 2021-08-09 - ***Lost Frontier*** - 0.50.0
+## Major Changes:
+• Beginnings of a new game mode: `Lost Frontier`
+  ◦ Craft, farm, explore, and upgrade!
+  ◦ To get started, create a new world and choose the `Lost Frontier` mode
+  ◦ All existing worlds are `Unlimited` worlds
+  ◦ Lost Frontier worlds are currently limited to 4 players
+  ◦ A number of features, like changing tool brush sizes, linking Waygates, and more players, will be unlockable in a later update
+• Add an item information view to get details on the cost of anything buildable, or the recipe of anything craftable
+• Add photo mode to share in-game snapshots with author and world information
+## Notable Additions:
+• Add Recent Updates to welcome screen
+• New category of `Settlement` props (in Lost Frontier, most of these need to be unlocked through Settlement upgrades)
+• New ores, metals, and alloys: Tin, Bronze, Iron, Emberyllium, Brightsteel, Cobalt, Mythril, Aetherstone, Aethersteel, Muttal
+• New wooden chair props
+• New crops: Tomato, Carrot, Pumpkin, Sugar cane, Red/Blue/Yellow Berry Bushes
+## Little Things:
+### User Interface
+• Expose `/world_chat` setting in world info view
+• Add Info button to Blueprint blue box interface to access the rename / share / etc buttons without needing to open the build menu
+• Make build menu scrollable instead of paginated
+• Add toggle between details view and icons view in the build menu
+• Allow clicking on user id in most places to copy it to the clipboard
+• Allow accessing the Waygate menus - Settlement Management, Energy Well, and Waygate editing - from the World Info screen even when not near the Waygate
+• Show unlisted Waygates on the World Info screen to people with Waygate edit permissions
+• Remove the "on solid ground" requirement from many props: doors, fences, chests, etc
+• Add error message when trying to plant seeds on something invalid
+• Allow placing intangible props over players (e.g. torch over self)
+• Allow drag-place by clicking and then moving
+• Change `E` to now never interact, just consistently open the menu
+• Add `R` as hotkey to behave the same as clicking (interact / place / break / etc)
+• Add `T` as hotkey to behave the same as toggling the mouse button down
+• Add `G` as hotkey to only interact without possibly placing/breaking
+• Add `PageUp`/`Down` as hotkey similar to mouse wheel - scrolls through quickbar and 3rd person zoom in/out
+• Add `Backspace` as hotkey any time there's a "back" button
+• Add `Delete` as hotkey to trash selected item in any inventory
+• Trigger mouse look upon WASD/Arrow keys
+• Add right-click to split an inventory stack
+• Add middle-click to sort inventory
+• Make some inventory mouse interactions more consistent
+• Allow right click to exit most menus
+• Allow clicking on empty space around a menu to close it
+• Opening menu via clicking the button or pressing Escape now remembers your previous menu page
+• Allow right click and double-click to select and immediately close the build menu
+• Allow dropping items on your paper doll to equip or consume them
+• Allow dropping tools on the gathering tools slot to equip them
+• Display a hint about using a torch when it is dark, `/show_lighting_hint 0` disables this
+• Remove red dot badge notifications for features older than this update
+• Fix scroll area for chat to not automatically scroll when you are actively scrolled back in the history
+• Fix unable to middle-click to 'pick' doors or flowers
+• Fix pressing `1` in inventory causing crashing attempting to slot over gathering tools (bug credit: DragonDMS)
+• Fix crash with larger brush sizes around props
+• Fix unintentionally blocking `Ctrl+R` hotkey on Chrome/etc
+• Fix various layout issues with the build menu's search tab on touch devices
+• Fix double-tapping on touch to work like double-clicking
+• Fix prop placement being very difficult with tall props
+• Fix slight gap between drop-down menu entries
+• Fix `Q` triggering quick-slot menu for read-only viewers (bug credit: Satera)
+### Graphics
+• Add sway to flowers
+### Commands and Options
+• Add `/playtime` and `/world_playtime` and `/world_playtime_all` to see your total playtime, your playtime in the current world, and all users' playtime in the current world, respectively, with time tracked as of this update
+• Add `/stuck` and `I'm stuck!` button to the World Info screen that can be used if you are in a world_free_pos world or you are a world admin/owner, and the world is Unlimited or you have already tried using Waygates to get unstuck
+• Add `Interactable UIs` and `Build Menu`: `Separate` or `Integrated` to customize when the quickbar and other menu tabs are shown, with fine-grain configuration available with `/split_factory`, `/split_container`, `/split_waygate`, `/split_build`, and `/quickbar_force_show`
+• Remove `/world_chat OWNER` option, as ADMIN users could just set it back to ADMIN anyway
+• Do nothing on `/d` if no defines were active
+• Reorder parameters to `/give` to have the count optional and first, and be insensitive to underscores, plurals, block/item prefixes, word ordering
+### World Generation
+• Adjust initial Waygate placement to more strongly prefer appropriate biomes
+• Extend the first day of new worlds for an additional 3 in-game days (30 min)
+• Reduce frequency of mushrooms in caves
+• Change which ores spawn where
+• Add ore in large boulders
+• Add ore deposits to cave walls
+• Fix ore deposits and mushrooms in caves being inconsistent across clients / sessions (bug credit: Atgrey)
+### Misc
+• Default to a limit of 100 Viewers in new worlds
+• Disable world_free_pos on all frozen (contest winner) worlds
+• Disable digging when non-gathering tools are selected
+• Add a stack size limit of 100 to all items
+• Remove excess internal information from the F3 debug cursor
+• Fix crash with water flowing over crops that have no place to drop their harvest (bug credit: Atgrey)
+• Fix a bunch of errors that happen when disconnected
+• Fix issue with head rotation when sitting
+• Fix so players fall if chair is removed from under them
+
+# 2021-07-26
+• Fix browser tab title not showing correct world name in some circumstances
+
+# 2021-07-15
+• Add Facebook profile pictures for Facebook users' friends
+
+# 2021-06-30
+• Add `/kb_sensitivity` and `/pad_sensitivity` for configuring turn speed on keyboard/gamepad (for better accessibility and for fixed-rate turning for video recording)
+
+# 2021-06-21
+• Some minor server maintenance
+• Switch from lantern back to gathering tools when promoted from spectator/viewer to builder, to prevent new users from spamming lanterns everywhere
+• A couple rare crash fixes
+
+# 2021-06-09
+• Fix some metal props not appearing shiny/the same as other props made of that metal
+
+# 2021-05-27 - ***World Info improvements*** - 0.47.0
+• Rework World Info page so that you can select the access preset without opening up the "edit world settings" sub-section, and so that that sub-section does not obscure the Waygates list
+• Fix offline players only showing as IDs on the World Info page
+• Fix per-user access drop-down menu getting squished when accessing a user near the bottom of the list on the World Info page
+• Fix 'Anyone can build' worlds not correctly showing as full at the main menu when at the hard limit
+
+# 2021-05-25
+• Fix incorrect message when trying to chat as a spectator or visitor and not allowed (bug credit: Satera)
+• Fix not immediately applying access level changes if a user has more than one client connected
+• Increase max /world_limit value to 500 but add a hard limit of 100 visitors and 35 builders
+• Don't allow setting world_fly to Visitors but not Spectators, it only prevents the people you can't see or hear from from flying, which is almost certainly never a good thing, and doesn't match your experience when choosing "Play as: visitor".
+
+# 2021-05-25 - ***Spectators*** - 0.46.0
+• Add new `Spectator` access level.  Spectators cannot be seen (and by default cannot chat), and have very little impact on the performance of a world
+• Renamed "viewer" to "visitor" and "member" to "builder" so the public levels are now:
+  ◦ Default spectator: "Anyone can spectate"
+  ◦ Default visitor: "Anyone can visit"
+  ◦ Default builder: "Anyone can build"
+• Add `/world_chat` command to set what access level is required to chat (default: Visitor or above)
+
+# 2021-05-20
+• Slightly improve behavior when camera is clipping surface blocks
+• Server performance and stability updates
+
+# 2021-05-18 - ***Time to Relax*** - 0.45.0
+• Add "sit" emote (`/me sits` or `/sit`)
+• Add a chair prop that triggers /sit if you interact with it
+• Enforce opacity on voxel packs for the tiles that require it
+• Fix not seeing blocks when the camera is clipping through them
+• Fix cube lights not being counted as 'lighting' for the F hotkey (bug credit: Spacy)
+• Fix tilled dirt doing odd things with crops above it
+• Use dirt tile on sides of tilled earth that is not open to the air (bug credit: Satera)
+• Fix blocks not allowing switching brush sizes immediately after being selected from the build menu
+• Fix liquid ticks running too often when recovering from a hiccup
+• Fix rare crash canceling photo mode
+• Fix rare when you navigate back from a world's loading screen to a blueprint view
+• Fix crash running /quickbar_reset when you have no quickbar
+• Fix crash watering a plant while recovering from a prediction failure
+• Fix rare crash with touch events on FireFox
+• Improve chat window performance
+• Improve server performance balance
+
+# 2021-04-26 - ***Per-world option: single client per-user*** - 0.44.0
+• Add `/world_single_client` option that can be set to 1 to limit only a single connection per-user to that world
+
+# 2021-04-16 - ***Rod Rotation and Fixes*** - 0.43.0
+• More consistent rules for rod orientations
+• Add new vertical and horizontal rod props available as modes when placing the default rods
+• Limit the distance at which clicking on a player name opens their user info to 12 blocks while pointer-locked
+• Add `/name_interact_dist` and `/name_interact_dist_locked` for configuring this behavior
+• Suppress some spammy chat messages
+• Add `/waygate_list` for showing all entryways in a world, including unlisted Waygates if you have access
+• Default newly added Waygate Entryways to Listed
+• Fix unable to reassign an existing Waygate ID if you were at the world limit (bug credit: Satera)
+• Fix worlds to update the display name of the owner if they have changed their name
+• Fix old world names momentarily showing up in the My Worlds list for renamed worlds
+• Fix crash running `/respawn all` and `/waygate` when not in a world
+• Fix crash if you click both 'accept' and 'cancel' on the same frame while taking a photo
+• Fix crash using PageDown to scroll blueprints tab of the build menu
+• Fix coal disappearing from quickbar upon reload
+
+# 2021-04-06 - ***Eggless***
+• Eggs -> Gems
+• Add `/world_tool_lock` world setting to restrict users to just the default tools
+
+# 2021-04-01 - ***Eggs and Ears***
+• Gems -> Eggs
+• Fix graphical issues with ears (bug credit: Satera)
+
+# 2021-03-30
+• Fix server error causing newly created worlds with invalid names not to be saved (bug credit: Satera)
+• Enforce max name length for worlds (bug credit: Satera)
+
+# 2021-03-29 - ***Fixing some user-reported bugs*** - 0.42.5
+• Enforce max name length for blueprints (bug credit: Satera)
+• Require MEMBER access for /give (bug credit: Satera)
+• Fix some characters not in the font showing as invisible instead of tofu (bug credit: Satera, aka "")
+• Filter on all whitespace characters for checking valid display names
+• Fix long waygate names not fitting in world info view
+• Disallow setting Waygate images if custom voxel packs are in use
+• Fix drag-and-dropped textures not applying to default voxel texture correctly
+• Disallow buckets and rods made from invalid materials
+• Limit quickbar to items which cost only valid items
+
+# 2021-03-22 - ***Minor blueprint sharing fixes*** - 0.42.4
+• Add scroll area to bluebox UI to deal with blueprints with very large resource lists
+• Fix requiring clicking 'Play' after following a blueprint link before seeing the blueprint
+
+# 2021-03-19 - *0.42.3*
+• Fix /friend_* commands to be case-insensitive
+• Fix world flashing for a frame before the loading screen comes up when Waygating/teleporting
+• Replace decimals in title font with some more standard fixed-height ones
+• Back-end change to better balance performance of individual worlds
+
+# 2021-03-15 - *0.42.2*
+• Fix crash with a giant tree in a particular seed being too... giant
+• Fix race condition between water flowing into recently vacated block and placing a block in that location causing water to overlap a solid block (bug credit: IGotYouBlue)
+
+# 2021-03-09
+• Redirect to https
+
+# 2021-03-09 - *0.42.1*
+• Fix unable to middle-click to pick some props if certain things are currently in-hand
+• Add /view_dist_temp for temporarily overriding view distance with unreasonably high values for screenshots (warning: will crash browser above some values)
+
+# 2021-03-08 - ***Little Fixes*** - 0.42.0
+• Add delay before starting digging if clicking on an interactable prop
+• Change arrow keys to look up/down instead of move, if the user is using WASD for movement
+• Don't show 'Having fun building?' prompt in frozen worlds (bug credit: Satera)
+• Add warning if a user is slotting equipment into their quickbar but should be placing it in their empty Equipment Slots
+• Fix crash if getting disconnected while adjusting some world settings
+• Fix crash running /give while recovering from a prediction failure
+• Fix crash running Debug: Tools while recovering from a prediction failure
+• Disable all inventory button actions while recovering from prediction error
+• Fix /give allowing stacks of non-stackable things, causing crashes
+• Fix some rare inventory crashes
+• Fix crash if digging a block and a plant on the same frame and the plant was lacking a block under it
+• Fix coal dropped from blocks not able to be picked up
+• Fix error if two people set a Waygate image in the same world at the same moment
+
+# 2021-02-22
+• Remove invalid/unknown blocks/items from inventories, fix `/give` to not give them
+• Fix missing outlines on the gems/likes/views HUD
+
+# 2021-02-18 - ***Minor bug fixes*** - 0.41.1
+• Reduce light emitted from luminescent mushrooms
+• Fix blueprint sorting to be consistent across sessions (bug credit: Satera)
+• Fix crash if using E to interacting with a prop that was removed on the same frame
+• Fix crash running /give from the main menu
+• Fix crash is someone else adds to a stack in a chest that you had just removed
+• Fix rare crash interacting with inventory
+• Fix crash if you pick up or have slotted an old/invalid flower seed
+
+# 2021-02-15
+• Fix crops not growing after returning to a world or refreshing the page
+
+# 2021-02-12
+• Add shift/ctrl/right click information to tooltips on inventory items
+• Change luminescent mushroom seeds to not glow when in-hand
+• Fix crash placing blueprint containing flowers on top of tiles that no longer exist
+• Fix crash if someone removes a Waygate while you're editing Waygate targets
+• Fix rare crash dropping an item on the same frame you deselect it
+
+# 2021-02-11 - ***Felicitous Flowers*** - 0.41.0
+• Add new flowers and mushrooms to the world and in caves
+• Add plantable flowers and mushrooms to the build menu
+• Allow flowers & mushrooms in blueprints
+• Greatly improve performance when there are a large number of crops
+• Plants now grow (slowly) if not watered
+• "Ore in stone" blocks now show what ore they would drop
+• Enhance usability of inventory with shift-click/double-click sending a stack, ctrl-click sending 1, right-click/long-press splitting a stack
+• New generated worlds always start in the morning and sync up to global time by the end of their (elongated) first day
+• Display an error message if you try to dig a prop that cannot be dug because it is a non-empty container (chest)
+• If you have an empty/disabled inventory slot selected, and a gathering tool is equipped that could gather, automatically switch to that instead of saying hands are insufficient
+• Use prop material to determine appropriate tool used to deconstruct them
+• Fix crash if WebGL is disabled
+• Fix for props flickering invisible for a few frames after being placed
+• Fix browser's 'unsaved changes' prompt happening when you press ctrl+f4 when /ctrl_disable 1 is set
+• Fix crash with a single-frame drag & drop in the inventory
+• Fix divider lines in the UI disappearing at some resolutions
+
+# 2021-02-01 - ***Searching...*** - 0.40.0
+• Allow searching for worlds by name
+• Fix crash scrolling a scroll area via keyboard before it is visible
+
+# 2021-01-26 - ***Caves and Deltas*** - 0.39.0
+• New generated features: caves, river deltas, ore veins to generated worlds
+  ◦ Caves and ore veins will appear in unspoiled areas of existing worlds
+  ◦ River deltas only appear in newly created worlds
+• New biome types: Spiky shallows, spiky forest, river deltas
+• New blocks: Coal, Ore in Stone varieties
+• New props: Ore and Ingots in Copper, Silver and Gold (models and metal types still WIP)
+• Color user names in world and world info based on assigned roles
+• Rename "Gems" block to "Ore in Stone"
+• Rename "Mythril" material to "Aethersteel"
+• Performance and memory optimization improvements
+• Replace quickbar with a single slot for a lantern when on view-only worlds
+• Better position touch movement controls when quickbar is not visible
+• Fix discontinuities generated from rivers on steep slopes
+• Fix crash if loading slow enough and flying fast enough that everything gets unloaded
+• Fix crash if you ran /safe_area with non-numerical arguments
+• Fix crash if you give yourself an invalid item
+• Fix crash canceling drag-placement
+
+# 2021-01-04 - ***Pretty Little Things*** - 0.38.0
+### Still working on some big things, but we've released a bunch of small little things today:
+## New Things
+• Add "block" list to prevent specific users from seeing your online presence
+• Expose world_blueprint in the World Info setting screen and default it to Admins for new worlds
+• Always use high graphics settings when taking snapshots for Waygate images
+• Shiny things are now shinier indoors/underground where there was no directional lighting
+• Smoothly fade recently loaded Waygate images
+• Add Waygate preview images for all basic flat world types
+• Add tooltips to likes/views indicator so people don't think the eye means someone's watching them
+• Hide "friends in world" worlds if they're in a world you do not have access to
+## Minor Fixes
+• Apply flashlight/lantern from character position to fix strange lighting in 3rd person
+• Typing /D with no parameter now clears all debug defines instead of crashing
+• Fix arriving backwards at the default Waygate the very first time (explains why some many contest worlds Waygates are facing the wrong way!)
+• Fix search tab not updating upon adding or deleting a blueprint
+• Fix distance LODs underwater sometimes changing in weird ways
+• Fix like button acquiring (invisible) keyboard focus upon click
+• Fix doors and some other props not having faces on their bottom side
+• Fix ambient light underground being absolutely black
+• Fix excessive amount of updates when deep water is flowing downward
+
+# 2020-12-11 - Looking up - 0.37.0
+### We're busy on a bunch of big things for farther down the line, so just a few little fixes in this update:
+• Character heads now look up at nearby players when in 3rd person
+• Fix frozen worlds not showing the Waygate image to their owner (bug credit: Niko)
+• Fixes for jumping and flying in water
+• Change underwater swim speed
+• Fix emote zoom issue
+
+# 2020-11-30
+• Fix digging with larger brush sizes getting caught on blocks between the camera and player in 3rd person
+• Fix frequent crash whenever you disconnect/reconnect
+
+# 2020-11-25 - Diving In - 0.36.0
+• Add increased fog/reduced visibility while underwater
+• Add swimming and swimming animations
+• Adjust water surface to be more opaque
+• Better blend animations when digging while walking, etc
+• When in first person, zoom out while playing an emote
+• Look at where you dig (on mobile)
+• Fix crash when leaving a world while a continent load is still in progress
+• Fix fog not applying to rounded corners of blocks causing slight glow at night/underwater
+
+# 2020-11-18
+• Add /ctrl_disable setting to disable Ctrl as a movement key as a temporary workaround until we have general control mapping
+• Fix trophies not showing up if the world is both active and a contest winner (bug credit: DragonDMS)
+• Fix crash on Moto phones when occasionally touch positions are non-finite
+• Fix some rare crashes
+
+# 2020-11-16
+• Use new Discord invite link
+• Hide blueprint box and Small world bounds in F9/?D=NOUI mode
+• Fix pressing E cancelling queued placements (bug credit: Brayn)
+• Fix rare discontinuity on rivers in LODs
+• Fix button rollover sounds playing at the wrong time
+• Fix rare iPhone audio crash
+
+# 2020-11-12
+• Default to Resolution Scale to 50 on non-discrete GPUs for better default performance on mobile
+
+# 2020-11-11 - It's a small world after all - 0.35.0
+• Add new world option "Small (50)" for a world limited to 50x50x50
+• Improve visuals on Blueprint edit bounds
+• Improve initial world load streaming
+• Add /liquid_per_tick to limit performance impact of water updates modifying the world (default: 5)
+• Add /auto_fullscreen setting that tries to enter full-screen mode when you press Play (default on for Android devices)
+
+# 2020-11-10
+• Do not cancel queued places if pointer lock is lost due to opening menu or chat
+• Add scroll bar to drop-down lists with too many elements
+
+# 2020-11-06
+• Add drop shadow to likes/views icons so they're more visible in a dark world
+• Do not do rotation on edge dragging if the current drag has never left the edge, to prevent instant rotation during tapping menu buttons near the side of the screen
+• Some tweaks to player skins and colors
+• Fix inventory icons sometimes going bad/black
+• Fix crash trying to take Waygate photo far away from Waygate
+• Fix crash trying to interact with a blue box for a blueprint that is not yet loaded
+• Fix crash trying to place a large prop in a chunk that is not yet loaded
+• Fix occasional crash if disconnected while generating a chunk
+• Fix some rare crashes on mobile devices
+
+# 2020-11-05 - Third Person Camera - 0.34.0
+• Add new 3rd Person Camera and related options and hotkeys (V, V+mouse wheel)
+• Add new snowy pines mountain biome type
+• Add experimental /blueprint_auto_destroy option to have blueprints destroy instead of pausing when they are blocked
+• Increase Waygate Exitway target limit to 100
+• Do smoother carving of terrain around rivers to reduce visual artifacts (may cause slight corruption in old generated worlds)
+• Better blending of rivers into lakes/oceans (may cause slight corruption in old generated worlds)
+• Fix 3D touch location registration on devices with a safe area / notch / etc
+• Move Exit World button in the World Info screen to upper left and make it larger
+• Better layout of drop-down selection boxes
+• Keep main menu tab and scroll position when returning to menu from a world
+• Remove special interact behavior on plants so you just dig them like other props
+• Show error if disconnected while uploading Waygate images
+• Fix touch drag-place cancel button overlapping with where a drag is started, causing immediate cancel if you try to place a block in the corner of your screen - now cancel button will be relocated to the other side if necessary (bug credit: DragonDMS)
+• Fix no visual feedback on cancel button during drag-place
+• Fix crash trying to place a prop in a chunk that is not yet loaded
+
+# 2020-11-02
+• Add /sim_pause to disable simulation updates on your client
+• Display friends separately in the "Other users already here" list
+• Add crawler-accessible indexing so search engines can start indexing all public worlds
+• Fix user context menu dismissing too aggressively, making you unable to set user to Member or Admin with a mouse from the in-world context menu
+
+# 2020-11-02
+• Fix broken lighting on some blocks and clouds since previous update
+• Fix some rare crashes while disconnected
+• Fix Add to Home Screen on Chrome not using the current loading screen color scheme
+• Fix snow appearing on too-steep mountain cliffs
+
+# 2020-10-30
+• Compatibility fixes for some older devices - Chrome v71, Redmi 6A phones, and similar
+
+# 2020-10-30
+• Main menu now has a :mag: tab for finding worlds by likes/views/editability
+
+# 2020-10-29 - World List Improvements - 0.33.0
+• Main menu now has a Contest Winners tab
+• World lists now place any full worlds at the end of the list and denote them as "full"
+• Add /world_chat_clear to clear chat history
+• No longer constantly show the Like button/count if editing in a private world
+• Fix rare crash if returning to the main menu while disconnected while recovering from an inventory prediction failure
+• Fix rare crash when someone is editing near you while you are loading
+
+# 2020-10-27
+• Fix Waygate image snapshots and copy to clipboard failing, not working right, or not looking good, under various combinations of Resolution Scale and use_fbos.
+
+# 2020-10-26
+• Now show crosshair even in read-only worlds
+• Add setting, /drag_edge, for how much of the edge of the screen causes rotation when dragged over on touch devices, and increase the default slightly
+• Fix FOV setting not persisting (bug credit: DragonDMS)
+
+# 2020-10-24
+• Greatly reduce stalls when moving, especially at larger View Distance settings
+
+# 2020-10-24
+• Fix unable to scroll to bottom of the options UI in read-only worlds
+• Fix occasional crash viewing the Blueprint UI
+
+# 2020-10-23 - Minor Fixes - 0.32.1
+• Rotate the view when dragging to the edge of the screen (with touch controls)
+• Exiting pointer-lock while doing a drag-place now no longer cancels previous queued placements
+• Allow world admins to run /respawn all and /respawn user_id
+• Add View Distance and Pretty/Fast presets to graphics options UI
+• Fix blurry rendering on devices with non-integral pixel ratios at some resolutions
+
+# 2020-10-22 - Skin Variety - 0.32.0
+• Add two new skins for 10 Gems each
+• Disable Gems and Likes UIs when in NOUI / F9 mode
+• Fix some players not drawing if any players are far away
+• Fix crash on some versions of Firefox
+
+# 2020-10-21 - Graphics Performance Improvements - 0.31.0
+• Apply resolution scaling to the 3D world only
+• Add Antialiasing to options screen
+• New offscreen rendering approach to greatly improve performance on iOS devices (can toggle with /use_fbos)
+• Show like and view count on the main screen in appropriate worlds
+• If something goes wrong loading Shiny graphics on old devices, silently force Meh graphics
+• Regardless of options, prefer Shiny graphics on character paperdoll and preview icons
+• Increased bevel amount on characters slightly
+• Fix visual artifact in ambient occlusion around beveled edges on some faces, especially on characters
+• Default to Shiny graphics and Antialiasing only on discrete GPUs
+• Lower defaults to /view_dist 8 and /lod_view_dist 6 and FoV of 50 on non-discrete GPUs (previous defaults 15/8/60).
+
+# 2020-10-14 - Like! - 0.30.0
+• Add likes and unique visitor counts to worlds
+• Add time of day presets to world settings dialog
+• Add hint text to remind people that Waygate orientation affects arriving visitors
+• Let users know the cooldown on name changes is 24h if they are prevented from changing their name
+• Remove extra drag wiggle room when placing small props with touch controls so they behave more like blocks (bug credit: DragonDMS)
+• Fix unable to remove props due to them thinking they were supporting another prop that was in fact two tiles above (bug credit: DragonDMS)
+• Fix some blending artifacts on the edge of mountains
+
+# 2020-10-12 - [name hidden] - 0.29.0
+• Add new World Setting, Show other players: Near/Medium/Far/Unlimited and /world_user_vis_dist (defaults to Medium on all existing worlds)
+• Limit digging speed (of faster/mythril tools) to default tool speed until at least one block as been broken to reduce accidental breakage
+• Abort drag-place if you exit pointer-lock (Escape/RMB)
+• Fix jump button overlapping quickbar if quickbar is configured on the right in landscape mode (bug credit: AbinashWorlds)
+• Fix ghost of self appearing upon reconnect (bug credit: SlayCC's ghost)
+• Exit pointer-lock on Ctrl+W in case the browser does not do so automatically (work around recent Chrome bug)
+
+# 2020-10-09 - Shiny! - 0.28.0
+• Add Gems that can be found in featured worlds and previous contest winning worlds
+• Allow purchasing skins with Gems
+• Add button to World Info screen to toggle previewing a world as a Viewer, if you have edit rights and others don't
+• Do not count visits by the world owner or multiple simultaneous visits by the same person towards a world's Visit Count
+• Fix crash if disconnected from a world while editing the world name
+
+# 2020-10-07
+• Fix player names being misplaced when in inventory menu (bug credit: LeoGiaco)
+
+# 2020-10-06 - 0.27.1
+• Limit chat history to at most 3 join/leave messages, at most 1 per user
+• Only display procedural world warning upon creation
+• Expose /mouse_sensitivity in the options for touch users as 'Look Sensitivity'
+• Fix some errors with people building while reloading/reconnecting
+• Fix crash if viewing costume options while reconnecting
+• Fix header logo being covered by menu
+
+# 2020-10-02 - 0.27.0
+## Major Changes
+• Add new welcome screen with avatar customization
+• No longer resetting generated worlds daily - they may be reset again once or twice, but should be relatively stable for months
+• New local mountain terrain generation with dirt/grass/plants
+• Add double doors and tables in all wood types
+• Add new unlockable skins (currently through Facebook Pay only, will be available for all users in the next major update)
+## Little Things
+• Add /volume_chat_joinleave (default: 0.1)
+• Add /volume_chat_in/out settings
+• Add selector for base tile / seed selection when creating new flat worlds
+• Show worlds with a custom Waygate image earlier in the list than those without
+• Add /show_net 0/1 for monitoring network usage
+• Updated base avatar skins
+• Fix friend/featured worlds repeating in active section
+• Fix crash if two people place an object into the same slot of the same chest at the same time
+• Fix crash caused by dropping a dragged item on the same frame the drag began
+• Fix crash when a crop both grows and is upset by water on the same tick
+• Fix appearance not applying upon second connection from the same user
+
+# 2020-09-25
+• Show longer list of active worlds
+• Add some surface erosion to generated boulders
+• Fix tool/hand registration point
+
+# 2020-09-16 - /wave - Alpha 0.26.0
+• Added a wave emote
+
+# 2020-09-14
+• Fix crash trying to pick a prop that had not finished placing
+• Fix crash trying to add a friend while not logged in
+• Fix crash if water uproots a crop on the same frame it is placed
+• Fix crash generating boulders on old browsers
+• Fix occasional error while placing a bunch of blocks at once into a new chunk
+
+# 2020-09-11 - Boulderin' - Alpha 0.25.0
+• New procgen details: boulders, stumps
+• Add loading spinner
+• Fix arm positions in idle animation
+• Lots of server backend work this week, which you should not notice, other than we'll have a half hour of downtime here and there as we make some transitions
+
+# 2020-09-07
+• Fix confusing typo in "you are not allowed to use blueprints in this world" which previously said "you are now allowed..." -_-
+• Fix issue with reconnecting when restoring a browser on mobile
+• Fix crash trying to use a Waygate link while disconnected from the server
+• Fix world info page not loading the first time, if using the browser back button to cancel connecting to a world and return to the main menu
+• Fix crash if you disconnect and reconnect to a world (using browser back button) before the first world has loaded your user
+• Fix crash related to predicting placing props
+
+# 2020-09-06
+• Fix Resolution Scale and iOS Safari's top safe area not playing well together
+• Increase size of slider handles for easier use on touch devices
+
+# 2020-09-04
+• Add simple in-game bugs/feedback dialog for people who can't get to / are too lazy to get to Reddit/Discord
+• Select Gathering Tools by default when entering a new world where you have build privileges
+
+# 2020-09-03
+• Add online user count to main menu
+• Facebook integration enhancements
+
+# 2020-09-02
+• Add experimental Resolution Scale in options for increasing performance at the cost of visuals (was in the earlier update, forgot to include in the patch notes!)
+• Fix unable to re-add a removed friend if they were a Facebook user
+• Fix not seeing other players' costume choices
+
+# 2020-08-31 - New Fonts and Fixes - Alpha 0.24.0
+• Add new fonts with international character support
+• Fix inconsistent procgen results on old browsers
+• Fix crash if world info and friends list loads before friend's user info
+• Fix crash if user navigates to a different world after creating a new world but before it finishes creating
+• Fix crash when disconnecting while modifying a prop
+• Fix crash if you reconnected while still logging in from a previous reconnect
+• Fix crash returning to main menu after a world has been reset
+
+# 2020-08-27
+• Fix chat join/leave messages not showing up
+• Add new "frozen" world feature so contest entries cannot be modified, deleted, nor count towards a user's world quota
+
+# 2020-08-26 - Worlds With Friends™️ - Alpha 0.23.0
+• Add Friends List
+  ◦ Add any user by clicking on their name anywhere
+  ◦ See where your friends are in-world from the main menu or friends list
+• Add new, rare, Megatree biome type
+• Fix unable to build immediately after entering pointer lock until you moved the mouse
+
+# 2020-08-22 - Bugfixes galore!
+• Do not try to place initial Waygate underwater in a lake
+• Fix crash if changing Waygates while still loading world info
+• Fix crash if you get kicked while setting Waygate images
+• Fix crash while reconnecting while building
+• Fix crashes if you disconnect from a world while still loading
+• Fix crash if browser does not allow history.replaceState
+• Fix crash if browser has supported but disabled BroadcastChannel API
+• Fix rare crash using quick slot menu
+• Fix unable to receive continent data under some circumstances
+• Fix crash if loading into a chunk that is surrounded by 26 other chunks that have all been spoiled
+• Fix alignment of logged in as text for FB users
+• Add additional tracking information for some rare crashes
+• Remove all unknown/deprecated items from player and chest inventories
+• Remove crafting menu from main UI
+
+# 2020-08-18
+• Fix not exiting gamepad-mode when entering touch-mode (bug credit: SlayCC)
+
+# 2020-08-14 - New world image and bug fixes - Alpha 0.22.0
+• Integrate new default world image (contest winner credit: SlayCC)
+• Use display names for older entries in chat history
+• Fix inconsistency in continent generation on old browsers
+• Fix painted wood #2 being described as 'empty'
+• Fix crash when equipping items while inventory is being refreshed after prediction failure
+• Fix sometimes trying to place initial Waygate on heavily sloped terrain
+• Fix crash on disconnect and reconnect for Facebook users
+• Fix other misc minor crashes
+
+# 2020-08-07 - Scrolling Everywhere - Alpha 0.21.0
+• Add new player list and access controls interface to world info screen
+• Add scrollbar to main menu if sufficient worlds are listed
+• Add scrolling chat history
+• Add user ids to chat tooltips
+• Add O as hotkey for wOrld info
+• Change main menu sorting to put active worlds before recent worlds
+
+# 2020-08-01
+• Fix editing with touch controls not working after previous patch
+
+# 2020-07-31 - Character and Tool Equipping  - Alpha 0.20.0
+• Add paper doll view of character in the Inventory menu:
+  ◦ Show currently equipped tools and allow equipping of different tools
+  ◦ See your own character and allow easily changing your appearance
+  ◦ Add button to easily change your display name
+  ◦ Allow inventory/character menu in read-only worlds
+  ◦ Picked up tools are auto-equipped into empty equipment slots
+• Change Waygates targetting the 'Default Waygate' of another world to behave as if the user simply joined the world, returning them to their previous position
+• Fix Waygate target list for other worlds excluding Waygates with the same ID as the one which you are editing
+• Fix incorrect message while saving waygate changes
+• Reduce frame spike when loading new character graphics
+• Fix drag and drop of inventory items behaving differently depending on whether the source was earlier or later in the list
+• Disallow changing display name more than once every day
+• Fix character spinning around when people first connect
+• Fix character customization not applying upon reconnect
+• Destroying props now uses/requires an appropriate tool depending on the material
+• Remove Rocks and Flint items; Now raw Flint Blades can be found in sedimentary dirt
+• Remove Simple Gathering / Knife tools; Flint Blades now act as the first tier hatchet
+• Debug: Tools now gives a wider assortment of tools
+
+# 2020-07-24
+• Add mouse sensitivity to options menu and re-layout options menu based on view
+• Bind Q to Quick-Slot (as if you right clicked/long-pressed the active or recent quickbar slot)
+
+# 2020-07-22 - Big Procedural Generation Changes - Alpha 0.19.0
+## Major Changes
+• New macro-level world generation generates coherent continents with:
+  ◦ Bigger mountains
+  ◦ All rivers and land flowing/sloping down to the ocean or other major body of water
+• Add a test of a very early version of a Mod API which can currently provide macro-level continent data when creating a new world
+  ◦ Play around with a custom continent generator and read more here: https://github.com/Jimbly/worlds-continent-gen
+## Little Things
+• LOD view distance: double the default distance, now configurable with /lod_view_dist (persisted)
+• Change /view_dist setting to be persisted
+• Add rocky springs as sources for rivers
+• Fix river carving to have fewer artifacts
+• Clouds are now bigger, higher, and fade out when near them to prevent rendering artifacts
+
+# 2020-07-17
+• Texture tweaks:
+  ◦ Make Light Wood Planks more even
+  ◦ Adjust some texture colors - Dark Stone less dark; Stone Bricks better match stone/dark stone
+  ◦ Higher fidelity Red Wood Planks
+  ◦ Reduce contrast of Light Wood
+  ◦ Fix tiling issue on Dirt w/ Flint
+• Reduce artifacts from new textures by fading out normal maps on non-WebGL2 devices, add /bump_fade for tweaking/testing
+• Fix error loading error sound
+
+# 2020-07-15 - Colors! - Alpha 0.18.0
+• New textures with normal maps for almost every block
+• Add new block: Painted Wood in 6 colors
+• Use more subdued grass tint colors
+• Add 2 additional leaf colors and different tree types now use leaves of different colors
+• Add a bunch of new sounds for digging/mining/placing/etc
+• Add new block targeting outline effect
+• Change targeting reticule to simple dot
+• Change block breaking effect to a new style
+• Fix delay removing plants when harvesting with a single-click
+• Update favicon to use Worlds logo
+
+# 2020-07-08 - Avatars and Animations - Alpha 0.17.0
+• Add avatars with animations!
+• Add 'Change Character' button in the options menu
+• Fix crash when someone destroys a chest you are currently viewing
+• Fix crash trying to craft a rod from leaves
+• Fix crash when Facebook users disconnect while logging in
+• Fix crash if client disconnected while initializing a new world
+
+# 2020-07-01
+• Add warning when setting a world to 'Anyone can build' and a link to the wiki page detailing world access settings.
+
+# 2020-06-30
+• Add /world_blueprint access setting ("credit": some griefer in the Let's Build event)
+• Fix crashes on old OPPO Android phones and IE
+• Fix trees being generated in water
+• Add some footing to willows
+
+# 2020-06-29
+• Allow granting admin access level to other users by world owner
+• Fix crash when blueprint is building two things to the same place at the same time (water and a underwater prop)
+• Fix inventory icons not showing up on blue box previews if not previously loaded
+
+# 2020-06-22
+• Fix crash when moving rapidly under high latency
+• Fix crash to second player when first player disconnects immediately after placing a block
+• Fix Copy Link dialogs to behave more reasonably when the Escape key is pressed
+• Restrict minimum view distance to 3, anything lower causes major issues
+
+# 2020-06-15
+• Add optional profanity filter to chat (can disable with /profanity_filter 0)
+• Fix shadows sometimes wrong in procedural worlds after a reset
+
+# 2020-06-08
+• Add /quickbar_reset and also aliased it as /clear
+• Add /fps as shortcut for toggling FPS display instead of /show_fps 0/1
+• Fix some errors when rapidly placing water
+• Fix a crash when experiencing heavy latency
+• Fix a crash when trying to do certain things while disconnected
+• Fix errors sometimes showing up while reloading the page
+
+# 2020-06-04
+• Add /go worldid/waygateid
+• Better detect if things are too out of sync after being disconnected and force a resync
+• Fix for reloading issues on Facebook
+
+# 2020-06-02 - Bugfixes and minor features - Alpha 0.16.0
+• Add /chat_auto_unfocus option and expose in Settings window
+• Add midnight/dawn/day/noon/dusk/night convenience parameters to /time
+• Add special flat world seed = 4 to generate water over sand
+• Add help message to /world_seed command (bug credit: Seizawa)
+• Fix sync error preventing placing blocks in a chunk if the very first block was placed while disconnected
+• Fix trying to pick up drops over and over again if in a read-only world
+• Fix to ignore trailing whitespace in console commands
+• Fix crash if a blueprint contains only water
+• Fix LODs sometimes using invalid heights
+
+# 2020-05-26
+• Fix title overlap in blueprint view page
+• Fix not loading blueprint data if not logged in
+• Fix crash related to texture unloading (bug credit: Seizawa)
+
+# 2020-05-26 - Trees  - Alpha 0.15.0
+• Replaced tress with 4 new tree types in procedural worlds: Poplar, Oak, Willow, and Pine
+• Add /live_url 0 option to disable updating the URL with your current position
+• Add /world_seed for displaying current world's seed
+• Fix crash when placing a blueprint with liquid overlapping an underwater prop (Bug credit: sean_delta)
+• Fix clouds drifting super low after leaving and re-entering individual worlds
+• Fix occasional crash when rendering new chunks
+
+# 2020-05-20 - Minor Updates - Alpha 0.14.0
+• Add Visit counts to the World Info screen
+• Add new logo
+• Fix some props disappearing when their base is out of view
+• Default relative flying off (-_-), so default is altitude-locked which is more similar to what a certain group of users expect from a certain other game
+• Fix edge rounding discontinuity around some props
+
+# 2020-05-15
+• Fix a couple causes of slowdowns on Safari
+• Fix text on Graphics Quality button
+• Add workaround for Safari bug leaving tap highlights visible
+
+# 2020-05-14 - Don't be a square - Alpha 0.13.0
+• New rendering and lighting style with rounded edges, bump maps, specular lighting
+• Add Graphics Quality option to options screen
+
+# 2020-05-08 - Worlds For All - Alpha 0.12.0
+• To facilitate testing, we now grant all users 2 worlds if they do not currently have any
+• Add simple World properties (permissions, name, etc) in the World Info screen
+• No longer show Bluebox edit bounds while taking photos
+• Fix non-opaque thumbnail images on some platforms
+• Fix blueprint snapshots not including props
+• Fix 'reconnecting' message erroneously showing up during login
+• Fix blueprints allowing save even if nothing changed
+
+# 2020-05-04
+• Fix wrong icon sometimes showing up in the blue box UI (bug credit: faragilus)
+
+# 2020-05-04
+• Fix drag-and-drop textures not uploading right
+• Attempt to work around WebGL memory leak in Firefox upon reload
+• Ctr+C now copies a screenshot directly to the clipboard where supported (Chrome)
+• Fix error when disconnected repeatedly
+• Fix negative time deltas on events from browsers to not cause the "crouch" action to cause you to "jump"
+• Reduce memory usage of dynamic world/blueprint images
+
+# 2020-05-01
+• Add thumbnail saving to blueprints to use when sharing
+• Fix reconnect errors over wss://
+
+# 2020-04-29 ***Waygates*** - Alpha 0.11.0
+## Major Changes:
+• Major new feature: Waygates
+  ◦ All worlds get a "Default" Waygate that affects the thumbnail used for link previews and such
+  ◦ Additional Waygates can be added in order to link to specific locations, or link between locations within a world
+  ◦ Removed all previous "spawn" location logic, everything is now relative to Waygates
+• Added World Info screen, accessible from the menu within a world, which shows all listed Waygates and other relevant information
+## Notable Additions:
+• Use preview images everywhere instead of text
+• Change any world or waygate link image to behave like an actual browser link (can right click/middle click/long press and get the expected result)
+• Start adding sounds - just chat notifications and some UI interactions with very rough draft sounds right now
+## Little Things:
+• Allow special world seeds to influence the base material in "Flat" worlds (2=grass)
+• Change default user limit for new worlds to 25
+• Fix browser titles not applying
+• Use binary WebSockets for all communication
+• Add fade transitions when loading finishes
+• Automatically initiate a loading screen if moving more than 75% of the view distance
+• Allow read-only users to interact with doors (locally) and not see Blueprint bounds
+
+# 2020-04-21
+### We're busy working on some big things that aren't quite done yet, so just releasing a couple minor bugfixes today:
+• Hide innocuous error message when two clients both resize the same bluebox bounds
+• Fix crash on iOS in shader loading
+• Fix crash upon user entering an invalid position string (bug credit: ravenseldon)
+• Fix crashes on IE
+
+# 2020-04-05
+• Fix crash if you have no blueprints upon login
+
+# 2020-04-01
+• Reverse relative order of blueprints in Build menu, so newest show up first (credit: faragilus)
+• Add more descriptive tooltips to Blueprint context options
+• Reduce maximum drag-place length to 32 blocks
+• Fix lighting going black when unloading and reloading a chunk near the edge of the view distance (bug credit: faragilus)
+• Fix error when playing while a new build is deployed
+
+### Everything below here since 0.9.0 wrapped into "Alpha 0.10.0"
+
+# 2020-03-31
+• Change how props interact with placing other props to be more consistent with how blocks behave
+• Automatically disable post-processing if framerate is poor (fix modal dialogs on iPhone)
+• Fixes to shaders for Samsung Galaxy Tab E
+• Fix water not generating mesh correctly when adjacent to props
+• Fix crash when water flowed through torches
+• Fix occasional crash using Back button in browser
+
+# 2020-03-28
+• Edited blueprints now expand or contract quicker, and in response to predicted placements, better dealing with latency (bug credit: faragilus)
+• Spawn trees using all wood types in Procedural worlds
+
+# 2020-03-25
+• Greatly improve how drag-place chooses which axis to place along
+• Increase distance limit between player and drag place origin/endpoint
+• Limit drag placements to 50 voxels in length
+• Add simple tutorial prompt about sharing URLs
+
+# 2020-03-24
+• Fix blueprints created in your very first session disappearing (bug credit: faragilus)
+• Add "View Controls" button to the options menu (straw/camel/back credit: TheTaquitoverlord)
+• Add big link to Reddit if user does not have private world access
+
+# 2020-03-23
+• Add Active Public Worlds list to main menu
+• Fix FOV setting not persisting (bug credit: TundrumMax)
+• Fix some on-screen text disappearing
+
+# 2020-03-23
+• Set Leaves #1/2/3 to different hues in Flat world types
+• Add hint about creating your own blueprints
+• Always reset to default (1x1 brush size, non-flipped, etc) when switching selected item in the quickbar
+• Fix /rename to work again
+
+# 2020-03-21
+• Fix crash with debug hotkey (M) on Flat worlds (bug credit: Bluephobes's friend)
+• Disable debug hotkey (M)
+
+# 2020-03-20
+• Add basic support for returning World and Blueprint names to crawlers/link previews
+• Reset held item in hand to nothing, if in a read-only world
+• Fix liquid-related crash (bug credit: lorkus)
+
+# 2020-03-20 - Blueprints and More! - Alpha 0.9.0
+## Major Changes:
+• Major new feature: Blueprints system: creating, building, sharing
+• Grant all existing Alpha users a quota of 2 personal worlds
+• Add two new world types: Flat (persistent) and Procedural (temporary)
+• Default new worlds to be public and read-only
+• Expand lighting props to included a Torch, Lantern, and Cube Light for each wood type
+## Notable Additions:
+• New chest and door models
+• Add Discord, Reddit, Terms of Service, Privacy Policy, GDPR, DMCA links to login screen / main menu
+• Add spinning thumbnail images for placeable props and blueprints
+• Props, espcially non-interactable props, now behave much like blocks in regards to digging with larger brush sizes
+• Links to blueprints and other worlds are now clickable in chat
+• Add /time and /time_scale commands, saved with the world; Default to time=10;scale=0 for flat worlds
+• Add system to persist spoiled (edited) hexomes so they can persist when we add new biome types (note: procedural worlds currently reset daily as we iterate on major systems, but eventually only unspoiled hexomes will reset when we release new content)
+• Unlimited Mode is now set per-world with /unlimited
+## Little Things:
+• Allow building on top of torches/lights as if they were solid
+• Allow placing/positioning of props more easily on touch
+• Protect recently placed blocks from being destroyed in the current dig operation/mouse click
+• Add hotkey information to tooltips on quickbar and inventory
+• Change F hotkey to select a torch in your quickbar if possible
+• Use correct name in tooltip for things like Leaves #2 and Tilled Dirt
+• Update dark wood fences to line up in all configurations
+• Add /world_free_pos
+• Add blue flower plains and red flower plains rare biome types
+• Add copy to clipboard option to chat on right click
+• Add general 'fullscreen' flow for modal dialogs/input aimed at touch devices with keyboards visible
+• Fix picking an item in the world scrolling the quickbar past the end
+• Fix lighting occasionally going black while flying in empty chunks
+• Fix flicker of block preview during drag-place while moving
+• Fix lighting not appropriately updating when deleting blocks under some circumstances
+• Fix text wrapping issue in chat
+• Fix occasional crash when returning to main menu
+• New approach to repairing damage from invasive browser extensions
+
+# 2020-01-29 - Quickbar and Build Menu overhaul - Alpha 0.8.0
+## Major Changes:
+• Major new feature: Quickbar and Build/Blueprint Menu
+  ◦ In preparation for editing blueprints, which will function similar to the current unlimited mode, the quickbar is now disconnected from your inventory, and things must be slotted into it
+  ◦ You can quickly slot something into the "Recent" slot by middle-clicking on it in the world
+  ◦ You can slot anything through the new Build menu (hotkey: B), which also allows you to see what resources are (or would be) required
+  ◦ You can also slot things by right clicking or long-pressing any quickbar slot
+  ◦ You can slot anything in your Inventory by dragging and dropping, or clicking to select an inventory item and then clicking to select a slot
+  ◦ You can slot anything from the Build menu or Inventory by mousing over the item and pressing the hotkey of the slot (2-8)
+  ◦ Any item selected in your inventory will get automatically slotted into the "Recent" slot
+  ◦ In unlimited mode, you can now build into the world anything that is slotted in your quickbar even if it does not exist in your inventory
+• Add debug toggle of Unlimited Mode to the options (default on for Alpha testing) - in the future this will be the mode active when editing blueprints, and probably as per-world option set when creating a world
+• New feature: In unlimited mode, a single click/tap when using 1x1 brush size now instantly removes the block
+• Major change: When placing more complex items, pay the cost in raw resources directly instead of requiring crafting the item
+• Change destroying complex items in the world to drop the raw resources instead of the item itself
+• Change destroying things in the world to no longer drop resources in unlimited mode
+• Changed how buckets work: Buckets are now either entirely full or empty, no partial states (we'll likely add a specialized watering can for multi-use watering later). Buckets now stack in the inventory. The quickbar will automatically re-slot a full bucket over an empty one, or vice versa, when appropriate. In unlimited mode, you'll likely want to slot both a full and empty bucket into two separate slots.
+## Notable Additions:
+• Add FOV slider to settings
+• Add hotkey = (equals) as an auto-run toggle on desktop
+• Change Brush Size hotkey to Z so B can be Build/Blueprint
+• Add hotkey X to toggle between Gathering Tools and whatever else was last selected
+• Add layout options to change where on the screen the quickbar resides. You can also drag the quickbar to the middle of the screen and then an edge to reposition.
+## Little things: (for the curious)
+• Add small chance for flowing water to leave behind grass where there was dirt
+• Allow placing Tilled Dirt in unlimited mode without a hoe
+• Allow placing all 3 color variations of leaves
+• Allow middle-click to pick tiles/objects from the world
+• Rename "Wall Block" crafting recipe to "Refined Block"
+• Rename refined wood and stone to be "planks" and "bricks" instead of "wall blocks"
+• Add Sand -> Glass to Refined Block crafting recipes
+• Add visible scroll position on quickbar to hopefully make scrolling it more discoverable
+• Add tooltips with item name to items in inventory
+• Add /show_ping to monitor network latency
+• Changed LOD distance to go slightly farther
+• Change sizing of text entry boxes on mobile devices to be more usable
+• Change touch drag-place cancel button to replace the menu button, leaving jumping/flying controls accessible
+• Change chat text to be visible over other UI if chat text entry is focused
+• Change chat input to be more like a button when not in focus on touch devices
+• Fix going faster, while flying, if pressing both jump and forward (bug credit: craftminer65)
+• Fix crash if you place more than 100 or so props (torches, etc) in a single chunk (bug credit: Tapperking), feel free to go nuts again
+• Fix accidental dig or place while tapping the chat window to un-zoom/un-focus the edit box
+• Fix sizing/paging of the command help tooltip after typing "/" on touch devices
+• Fix flashlight affecting rendering if inventory icon snapshots
+• Fix font to have full-height angle bracket and pipe characters for more readable command help
+• Fix water jumping two ticks when flowing into a chunk that previously had no water
+• Fix crash when flowing water leaves a chunk completely empty
+• Fix to work around WebGL2 support issues on Samsung TVs and (probably) Oppo A3S mobile device
+• Fix unable to open door with gathering tools selected
+• Fix various layout issues on touch devices when the chat interface is focused
+• Fix quickbar and other buttons being in a place where you cannot click, despite it being visible, on iOS Safari, when the URL bar is hidden
+• Fix to use full device width, while respecting safe area, on mobile devices with notches
+
+# 2020-01-07 - Misc fixes and chat / console command improvements - Alpha 0.7.0
+• Add indication of brush size to blocks held in hand when placing
+• Add new bucket voxel assets for when held and in inventory
+• Major performance fix for iOS devices
+• Various fixes for viewport going wrong on Safari
+• Make chat interface much larger when focused on touch devices
+• Do not show movement controls if chat interface is focused on touch devices
+• Allow entering of console commands when not in online multiplayer
+• Add auto-completion (after typing /, by pressing tab or clicking) when entering console commands
+• Add help/usage information to all console commands
+• Add /help foo to search through commands for those related to "foo"
+• Add history (up/down arrows) to console commands
+• Do not clear entered text if the console command has an error
+
+# 2019-12-17
+• Add F9 hotkey (or add &D=NOUI to the URL) to hide UI for taking better screenshots
+• Add B hotkey to quickly cycle brush sizes as if icon was tapped
+
+# 2019-12-17 - New wood types, fences, doors; Held tools - Alpha 0.6.0
+• Add/update 4 basic wood types, adding new craftables for each: walls, chest, lighting, 2 doors, rods, fences
+• Add system for using voxel assets for UI icons
+• Show currently selected item in hand and animate when using
+• Sync currently held item and animation over network to show on other clients
+• Add underlying system so the "Gathering Tools" uses the most appropriate tool from a (currently hidden) list of currently equipped tools, so we get appropriate graphics used while gathering, and later people will equip crafted tools that way
+• Apply lighting to other players in multiplayer
+• Add voxel model for all tools
+• Add voxel model for Rods, make them placeable in world
+• Add new voxel mode for the moon and sacks/bags
+• Crafted tools now remember both material types used to craft (e.g. flint head with dark wood haft) and palette swap appropriately
+• Disable tool requirements for crafting in current build mode test
+• Improved how props react to torch lights so they have more visible definition
+• Triple maximum block place rate
+• Allow stacking chests in inventory
+• Do not clear water when placing doors or chests underwater
+• Enable WebGL2 renderer where available by default
+• Fix lighting incorrect when previewing placement of props
+• Fix light falloff applying differently to props
+• Fix some minor lighting bugs
+• Fix block placement animations sometimes going black
+• Fix lighting flickering when digging in a chunk adjacent to a completely empty chunk
+• Fix 2x2 and 3x3 block place brushes not colliding with already queued up block placements
+• Fix errors trying to place water while underwater, or placing water over flowing water
+• Fix a couple crashes on Safari
+
+# 2019-12-09 - New Torches and Performance Improvements
+• Convert torches from a block to an item, add (still temporary) custom models for different attachment points
+• Add new mesh baking system allowing large numbers of items like plants and torches to be rendered much more efficiently
+• Torches now detach when underwater
+• Fix lighting on preview of placed items
+• Fix some items disappearing after being placed while waiting for server confirmation
+• Fix unable to dig anything when empty inventory slot selected
+• Fix z-bias issues on dig cursor/dig progress and props intersecting water
+
+# 2019-12-05
+• Fix occasional crashes when traveling back and forth quickly on a laggy connection (bug credit: bmx_301)
+• Add fallback if ISP destructively intercepts WebSocket connections (bug credit: ComCast)
+
+# 2019-12-03 - The Night is Dark and Full of Torches - Alpha 0.5.0
+• New lighting system with sun and torch light propagation and shadows, better ambient occlusion, darker nights
+• Before & after images: https://imgur.com/a/FzIgX1P
+• Fix rendering artifact in LOD rendering when mountains are carved away by rivers or users
+• Scale crop growth speed based on lighting
+• Default Gathering Tool to 1x1
+• Added a prototype lantern which can be toggled by pressing F (for "Flantern"?)
+
+# 2019-11-19 - Visual Improvements
+• Add tint color variation of grass and tree leaves; darker grass in forests; can now "see" the footprint of the forests in the long-distance LODs and there is a lot more visual variety.
+• Reworked gathering into a single multi-brush-size Gathering Tool
+• Fix poor handling of quick keypresses/taps/double-taps during long frames/slow framerates
+• Fix some visual popping with clouds and moon
+
+# 2019-11-04 - Big Performance, Little Update
+• More performance improvements related to world generation/loading and memory usage
+• Fix crash when using "Reset Inventory" button
+
+# 2019-10-29 - Major Performance Update - Alpha 0.4.0
+• Major performance improvements to world generation/loading speeds
+• More aggressively load nearby, but out of view, chunks after everything visible is loaded
+• Prioritize mesh generation of directly edited chunks, so you should no longer see through the world when mining
+• Ignore leading and trailing whitespace on login fields (bug credit: Zeldamaster)
+
+# 2019-10-22 - Big update / Lots of little updates day - Alpha 0.3.0
+• Players now get pushed out of blocks if they are stuck and there is open space nearby
+• Placing blocks over players is now prevented
+• Placing blocks with drag-place now better avoids trying to place a line parallel with your view
+• The first block placement skips the block placing queue time, so it is always snappier
+• Drag-place now delays placing the first block until releasing the drag (canceling now cancels the first block too)
+• Add cancel button to touch controls while doing a drag place (desktop users can still right click or look away to cancel)
+• Jump/fly button tweaks on touch devices
+• Make some textures more resilient against ISPs resizing them in-transit (bug credit: Pikapunchultri)
+• Add basic Gamepad support for movement
+• Performance improvements
+• Add /showfps and /fpsgraph for controlling how much performance information is visible
+• Fix dragging the quickbar erroneously entering pointerlock mode
+• Fix temporary consistency errors when mining with a ridiculous number of blocks flying around
+• Fix crash from Avast extension showing up as a crash in our app
+
+# 2019-10-14
+• Added workaround for erroneous giant mouse movements (camera flicking around) on Chrome on Windows.
+
+# 2019-10-14
+• Fixed /view_dist sometimes not working as expected
+
+# 2019-10-12 - Minor update today:
+• Updated texture atlas resolution and rendering to match up pixel-perfect when tiling and in regards to props like doors
+• Tweak with world color balance a bit and fix some distant LOD colors not matching
+• Protect against accidental unloading of the page with Ctrl+W when trying to fly forward and down (not a problem if you use "C" for down instead of Ctrl though)
+
+# 2019-10-09 - Big update today! - Alpha 0.2.0
+• Change default FOV to 60. You can now also permanently change your fov with /fov [number]
+• Add "Relative Fly: ON/OFF" in options (also /fly_relative 0 or 1)
+• Change to new wood colors/texture matching voxel based assets
+• Change dirt and grass transitions to be in the top (grass) tile.
+• Show drag & place block count
+• Add /mouse_sensitivity (default: 1.0)
+• Speed up block placement when placing lots of blocks
+• Replaced the following in-game assets with our now 7x7x7 voxel resolution assets.
+  ◦ Corn
+  ◦ Wheat
+  ◦ Chest
+• Flowers (Previously scrubs)
+• Added doors to the game (craftable from wood)
+• New blocks introduced to game
+  ◦ Glass
+  ◦ Birch Wood
+  ◦ Tree Planks
+  ◦ Red Bricks
+  ◦ Tiled Stone
+• Adjusted textures on
+  ◦ Wood Blocks
+  ◦ Red Stone
+  ◦ Tilled Earth
+• Change number of variations for most blocks to 4 at higher resolution instead of 16
+• You can now get the current texture for skinning at http://worlds.frvr.com/img/voxels.png
+• Bug fixes
+  ◦ Fix chest UI to scale to fit regardless of screen shape and new larger inventory size
+  ◦ Fix mouse wheel not cycling the quickbar on FireFox
+  ◦ Possible fix for WebGL context creation error on Microsoft Edge
+  ◦ Do not allow drag & place to target behind the camera
+  ◦ Fixed bugs with crops immediately growing when watered
+
+# 2019-10-01
+• For testing, enable unlimited blocks of all available kinds for all users
+• Limit chat messages to 140 characters
+• Make chat window background less transparent
+• Better handle FOV on portrait-mode displays
+• For testing, increase default inventory size to 32 slots
+
+# 2019-09-30
+• Change picking up water flow to completely fill bucket instead of partially, in order to reduce confusion (bug credit: @SirJosh )
+• Change bucket display to have 3 states for full, empty, or partially full
+• Do not display error if you just barely failed to pick up water before it drained away (bug credit: @SirJosh )
+• Fix rendering artifacts on ATI Radeon HD GPUs (bug credit: @TundrumMax )
+• Fix crash when doing a 2x2x2 or larger placement and running out of blocks mid-place
+• Fix crash when queuing a large amount of blocks to be placed and then running away
+• Fix crash if someone edited a new chunk just as you moved out of range from it (bug credit: @SirJosh )
+• Allow selecting and copying crash text on client, add instructions to reload after reporting
+
+# 2019-09-27
+• Streamlined login flow and token redemption (will no longer lose the position in the URL if the user needs to create and account and redeem an access token to get in)
+
+# 2019-09-27
+• Debug: Blocks in the Settings menu will now grant "Leaves"
+
+# 2019-09-27
+• Fix crash caused by bad Chrome extension leaking into page (bug "credit": fittypuhsent - you likely have a bad Chrome extension installed)
+• Fix crash when someone else modifies liquid just outside of your visibility range
+
+# 2019-09-26
+• Fixed pointer-lock issue on High DPI displays.
+• Added automatic reloading of the client when a new version is deployed, or if a session is resumed using an old version and there is a new version available.
+• Added build version/timestamp to main menu and Settings menu.
+
+# 2019-09-26
+• Fixed crash dropping items when flying near the ground (Bug credit: SlayCC)
+• Fixed crash swapping item with itself
+• Fixed mobile browser fighting for focus with the login input box
+    </script>
+    <div style="height: 200px"></div>
+  </body>
+</html>

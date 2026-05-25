@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Worlds FRVR</title>
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,user-scalable=no,shrink-to-fit=no,maximum-scale=1.0,minimum-scale=1.0,viewport-fit=cover">
+    <meta name="Description" content="Worlds FRVR Beta" />
+    <meta charset="utf-8"/>
+    <script>/* eslint-disable */
+      window.time_load_start = Date.now();
+
+      // Platform
+      window.conf_platform = 'android';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      // Environment
+      window.conf_env = 'prod';
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon-180x180.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+
+
+
+
+
+
+
+
+
+
+
+  </head>
+  <body>
+    <div id="debug_overlay"><div id="debug" class="noglov"></div></div>
+    <div id="feedback" class="screenwrap noglov" style="display: none">
+      <div class="safearea">
+        <form id="feedbackfrm" style="padding: 20px">
+          <table>
+            <tr>
+              <td colspan="2" align="right"><input type="button" id="feedbackcancel2" value="  X  "><br/></td>
+            </tr>
+            <tr>
+              <td valign="top"><label id="feedbacklabel" for="feedbacktext"></label></td>
+              <td><textarea id="feedbacktext" rows="10" cols="40" maxlength="1000"></textarea></td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td><input type="submit" id="feedbacksubmit"> <input type="button" id="feedbackcancel" value="Cancel"></td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td id="feedbackdescription"></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+    </div>
+    <div id="iframecontainer" class="screenwrap noglov" style="display: none">
+      <div class="safearea">
+        <div style="text-align: right"><input type="button" id="iframecancel" value="X"></div>
+        <div class="ios12_iframe_scrollfix">
+          <iframe id="iframe" frameborder="0"></iframe>
+        </div>
+      </div>
+    </div>
+    <canvas id="canvas" moz-opaque="true" tabindex="1"><div id="nocanvas">
+      Sorry, but your browser does not support WebGL or does not have it enabled.  Please check:<br/>
+      <a href="https://get.webgl.org/">get.webgl.org</a> or <a href="http://www.khronos.org/webgl/wiki/Getting_a_WebGL_Implementation" target="_blank">Getting a WebGL Implementation</a>
+    </div></canvas>
+    <div id="content">
+      <div id="safearea"></div>
+      <div id="nowebgl" class="screenwrap" style="visibility: hidden">
+        <div style="padding: 20px">
+          Error initializing WebGL.<br/>
+          Try reloading the page.  If the problem persists, perhaps your browser does not support WebGL or does not have it enabled.  Please check:<br/>
+          <a href="https://get.webgl.org/">get.webgl.org</a> or <a href="http://www.khronos.org/webgl/wiki/Getting_a_WebGL_Implementation" target="_blank">Getting a WebGL Implementation</a>
+        </div>
+      </div>
+      <div id="loading" class="screenwrap vflex">
+        <div class="flexcenter" style="flex:4; width:100%"></div>
+        <div class="flexcenter" style="flex:1; text-align: center;" id="loading_text">
+          Loading...
+        </div>
+      </div>
+      <div id="fullscreen" class="screenwrap">
+        <form id="dynform" autocomplete="off">
+          <input type="submit" style="display: none">
+          <div id="dynamic_text"></div>
+        </form>
+      </div>
+    </div>
+    <!-- disabled-build:js vendor/combined.js -->
+    <!-- endbuild -->
+    <script src="app_deps.bundle.js"></script>
+    <script src="app.bundle.js"></script>
+    <script src="fsdata.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54081731-31"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        window.dataLayer.push(arguments); // eslint-disable-line prefer-rest-params
+      }
+      if (!String(document.location).match(/^https?:\/\/localhost/)) {
+        gtag('js', new Date());
+        gtag('config', 'UA-54081731-31');
+      }
+    </script>
+    <script>
+      if ('serviceWorker' in window.navigator) {
+        if (window.conf_platform === 'msstart') {
+          window.navigator.serviceWorker.register('./service_worker.js').then(function (registration) {
+            console.log('[sw] registered with scope', registration.scope);
+          }, function (err) {
+            console.log('[sw] registration failed', err);
+          });
+        } else {
+          window.navigator.serviceWorker.getRegistrations().then(function (registrations) {
+            if (registrations) {
+              for (let ii = 0; ii < registrations.length; ++ii) {
+                console.log('[sw] unregistering');
+                registrations[ii].unregister();
+              }
+            }
+          }).catch(function () {
+            // Nothing, ignore errors in getRegistrations() as well as unregister()
+          });
+        }
+      }
+    </script>
+  </body>
+</html>

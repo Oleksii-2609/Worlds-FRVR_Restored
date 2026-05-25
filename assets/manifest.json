@@ -1,0 +1,28 @@
+{
+  "short_name": "Worlds",
+  "name": "Worlds FRVR",
+  "icons": [
+    {
+      "src": "img/favicon-dark-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "img/favicon-dark-256x256.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "img/favicon-dark-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "background_color": "#030303",
+  "display":      "fullscreen",
+  "orientation":  "landscape",
+  "scope": ".",
+  "theme_color": "#030303",
+  "ms_start_compatible": true
+}

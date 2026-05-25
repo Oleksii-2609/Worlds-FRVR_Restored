@@ -1,0 +1,39 @@
+{
+	"instant_games": {
+		"platform_version": "RICH_GAMEPLAY",
+		"custom_update_templates": {
+			"pass_score": {
+				"example": "Jessica just scored 100 and passed Alissa's highscore!"
+			},
+			"got_score": {
+				"example": "Jessica just scored 100 points!"
+			},
+			"collect_item": {
+				"example": "Jessica just collected 100 coins!"
+			},
+			"got_new_best_score_timeframe": {
+				"example": "Jessica just scored 100 points!"
+			},
+			"temporary":{
+				"example": "Quick and dirty push notification, not used in production"
+			},
+			"challenge_complete":{
+				"example": "Jessica completed a challenge"
+			},
+			"invite_to_play":{
+				"example": "Relax with Mahjong FRVR, Play now!"
+			},
+			"join_multiplayer_game":{
+				"example": "Jessica is inviting you to play live."
+			}
+		},
+		"match_player_config": {
+			"min_context_size": 2,
+			"max_context_size": 50
+		},
+		"bot": {
+			"subscription_type": "OPT_IN_PUBLIC"
+		},
+		"navigation_menu_version": "NAV_BAR"
+	}
+}
